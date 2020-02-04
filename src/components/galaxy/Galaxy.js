@@ -36,17 +36,13 @@ class Galaxy extends React.Component {
     render() {
         return (
             <View>
-                <LinearGradient colors={['#041628', '#1D364D']}>
-                
+                <LinearGradient colors={['#041628', '#1D364D']} style={{width:'100%',height:'100%'} }>
+
                 <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
                 <Text style={this.starStyle()}>.</Text>
                 <Text style={this.starStyle()}>.</Text>
                 <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
                 <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
-                <Text style={this.starStyle()}>.</Text>
-                <Text style={this.starStyle()}>.</Text>
-                <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
-                <Text style={this.starStyle()}>.</Text>                     
                 <Text style={this.starStyle()}>.</Text>
                 <Text style={this.starStyle()}>.</Text>
                 <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
@@ -60,7 +56,7 @@ class Galaxy extends React.Component {
                 <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
                 <Text style={this.starStyle()}>.</Text>
                 <Text style={this.starStyle()}>.</Text>
-                <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
+                <Text style={this.starStyle()}>.</Text>
                 <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
                 <Text style={this.starStyle()}>.</Text>
                 <Text style={this.starStyle()}>.</Text>
@@ -68,7 +64,11 @@ class Galaxy extends React.Component {
                 <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
                 <Text style={this.starStyle()}>.</Text>
                 <Text style={this.starStyle()}>.</Text>
-                
+                <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
+                <Animatable.Text animation="fadeIn" delay={this.random(0,1000)} iterationCount="infinite" style={this.starStyle()}>.</Animatable.Text>
+                <Text style={this.starStyle()}>.</Text>
+                <Text style={this.starStyle()}>.</Text>
+
                 </LinearGradient>
            </View>
         );
