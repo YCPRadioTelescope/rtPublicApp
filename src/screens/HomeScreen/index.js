@@ -5,6 +5,7 @@ import {login} from '../LoginScreen/AuthActions';
 import {connect} from 'react-redux';
 import { AsyncStorage } from "react-native";
 import styles from './styles';
+import LinearGradient from "react-native-linear-gradient";
 
 class HomeScreen extends React.Component {
 
@@ -17,10 +18,10 @@ class HomeScreen extends React.Component {
   render() {
     console.log('user', this.props.auth);
     return (
-      
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        
-        <Text>Home Screen</Text>
+        <LinearGradient colors={['#041628', '#1D364D']} style={styles.gradient }>
+      <View style={styles.container}>
+
+
         <TouchableHighlight onPress={() => {this.props.navigation.navigate('Schedule')}} style={styles.button}>
           <View>
             <Text> Schedule appointments Screen </Text>
@@ -46,12 +47,14 @@ class HomeScreen extends React.Component {
             <Text> Future Appointments Screen </Text>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight onPress={this.logout} style={{marginTop: 20}}>
+        <TouchableHighlight onPress={this.logout} style={styles.button}>
           <View>
             <Text> Press To Logout </Text>
           </View>
         </TouchableHighlight>
-        </View>
+      </View>
+        </LinearGradient>
+
     );
   }
 }

@@ -9,5 +9,15 @@ export default StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 13,
     alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  gradient:{
+    width:'100%',
+    height:'100%',
+  },
+  container:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
