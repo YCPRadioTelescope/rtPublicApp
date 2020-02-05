@@ -1,4 +1,4 @@
-import {Text, View, TouchableHighlight} from 'react-native';
+import {Text, View, TouchableHighlight, Image} from 'react-native';
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {login} from '../LoginScreen/AuthActions';
@@ -23,7 +23,7 @@ class HomeScreen extends React.Component {
           <View style={styles.navbar}>
             <TouchableHighlight onPress={this.logout} style={styles.logoutButton}>
               <View>
-                <Text>Logout</Text>
+                <Text style={{color:"white",}}>Logout</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -38,12 +38,20 @@ class HomeScreen extends React.Component {
             <View style={styles.row1}>
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Public')}} style={styles.button}>
                 <View>
-                  <Text> Public Appointments Screen </Text>
+                  <Image
+                      source={require("../../assets/images/publicAppointments.png")}
+                      style={styles.iconImage }
+                  />
+                  <Text style={{textAlign:"center",}}> Public Appointments</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Search')}} style={styles.button}>
                 <View>
-                  <Text> Search Appointments Screen </Text>
+                  <Image
+                      source={require("../../assets/images/searchIcon.png")}
+                      style={styles.iconImage }
+                  />
+                  <Text style={{textAlign:"center",}}> Search Appointments</Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -51,12 +59,20 @@ class HomeScreen extends React.Component {
             <View style={styles.row2}>
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Complete')}} style={styles.button}>
                 <View>
-                  <Text> My Complete Appointments Screen </Text>
+                  <Image
+                      source={require("../../assets/images/completeAppointment.png")}
+                      style={styles.iconImage }
+                  />
+                  <Text  style={{textAlign:"center",}}> My Complete Appointments</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Future')}} style={styles.button}>
                 <View>
-                  <Text> Future Appointments Screen </Text>
+                  <Image
+                      source={require("../../assets/images/futureAppointments.png")}
+                      style={styles.iconImage }
+                  />
+                  <Text style={{textAlign:"center",}}> Future Appointments</Text>
                 </View>
               </TouchableHighlight>
             </View>
