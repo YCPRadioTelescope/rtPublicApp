@@ -19,40 +19,48 @@ class HomeScreen extends React.Component {
     console.log('user', this.props.auth);
     return (
         <LinearGradient colors={['#041628', '#1D364D']} style={styles.gradient }>
-      <View style={styles.container}>
 
+          <View style={styles.navbar}>
+            <TouchableHighlight onPress={this.logout} style={styles.logoutButton}>
+              <View>
+                <Text>Logout</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
 
-        <TouchableHighlight onPress={() => {this.props.navigation.navigate('Schedule')}} style={styles.button}>
-          <View>
-            <Text> Schedule appointments Screen </Text>
+          <View style={styles.container}>
+            <TouchableHighlight onPress={() => {this.props.navigation.navigate('Schedule')}} style={styles.scheduleButton}>
+              <View>
+                <Text style={{fontSize:18}}> Schedule appointments </Text>
+              </View>
+            </TouchableHighlight>
+
+            <View style={styles.row1}>
+              <TouchableHighlight onPress={() => {this.props.navigation.navigate('Public')}} style={styles.button}>
+                <View>
+                  <Text> Public Appointments Screen </Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {this.props.navigation.navigate('Search')}} style={styles.button}>
+                <View>
+                  <Text> Search Appointments Screen </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+
+            <View style={styles.row2}>
+              <TouchableHighlight onPress={() => {this.props.navigation.navigate('Complete')}} style={styles.button}>
+                <View>
+                  <Text> My Complete Appointments Screen </Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {this.props.navigation.navigate('Future')}} style={styles.button}>
+                <View>
+                  <Text> Future Appointments Screen </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => {this.props.navigation.navigate('Public')}} style={styles.button}>
-          <View>
-            <Text> Public Appointments Screen </Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => {this.props.navigation.navigate('Search')}} style={styles.button}>
-          <View>
-            <Text> Search Appointments Screen </Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => {this.props.navigation.navigate('Complete')}} style={styles.button}>
-          <View>
-            <Text> My Complete Appointments Screen </Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => {this.props.navigation.navigate('Future')}} style={styles.button}>
-          <View>
-            <Text> Future Appointments Screen </Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this.logout} style={styles.button}>
-          <View>
-            <Text> Press To Logout </Text>
-          </View>
-        </TouchableHighlight>
-      </View>
         </LinearGradient>
 
     );
