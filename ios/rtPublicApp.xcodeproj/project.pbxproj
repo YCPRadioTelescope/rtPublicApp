@@ -20,6 +20,13 @@
 		808A20AEE8590C1CBDFADE1C /* libPods-rtPublicAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 259DE277859EBC6C21FFC0CF /* libPods-rtPublicAppTests.a */; };
 		B769501E0D5103EBB36CD587 /* libPods-rtPublicApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39386B1AD24987F3F8C39665 /* libPods-rtPublicApp-tvOSTests.a */; };
 		E0680C4FC9E1E57171FDF12C /* libPods-rtPublicApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5282D2D8FE4DC68832D4BC70 /* libPods-rtPublicApp-tvOS.a */; };
+		A1FEF2E3B04E42348A4AA9D2 /* Barton.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37C2D08D112442579CB8C632 /* Barton.ttf */; };
+		2BEFC421E4C44743990C8B22 /* Karu-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = F36AC2ACF76444E3A7246E49 /* Karu-Light.otf */; };
+		7BB79166F2144AFEA7F7268C /* Literal - Bold (Personal use).otf in Resources */ = {isa = PBXBuildFile; fileRef = B4B02CD107F745859AA6A756 /* Literal - Bold (Personal use).otf */; };
+		9CEC296FE67E4E5AA614C7FB /* Literal - Light (Personal use).otf in Resources */ = {isa = PBXBuildFile; fileRef = A42AF9214A9D4A598DF3F59E /* Literal - Light (Personal use).otf */; };
+		8A0A02A18F604D9B8B4600C2 /* Literal - Regular (Personal use).otf in Resources */ = {isa = PBXBuildFile; fileRef = D449D982858540FA8A629F36 /* Literal - Regular (Personal use).otf */; };
+		E784EED3F231400A9BD2F5C5 /* Marvelous Sans Demo.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9978B1A4B0D94F2CA906C6ED /* Marvelous Sans Demo.otf */; };
+		9F35503E40894CFE8AC3C370 /* MODERN SPACE.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1B331D37FE44865A87CA83E /* MODERN SPACE.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +75,13 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F185C30E2C9328FE1F1A22C5 /* Pods-rtPublicApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rtPublicApp.release.xcconfig"; path = "Target Support Files/Pods-rtPublicApp/Pods-rtPublicApp.release.xcconfig"; sourceTree = "<group>"; };
+		37C2D08D112442579CB8C632 /* Barton.ttf */ = {isa = PBXFileReference; name = "Barton.ttf"; path = "../src/assets/fonts/Barton.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F36AC2ACF76444E3A7246E49 /* Karu-Light.otf */ = {isa = PBXFileReference; name = "Karu-Light.otf"; path = "../src/assets/fonts/Karu-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B4B02CD107F745859AA6A756 /* Literal - Bold (Personal use).otf */ = {isa = PBXFileReference; name = "Literal - Bold (Personal use).otf"; path = "../src/assets/fonts/Literal - Bold (Personal use).otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A42AF9214A9D4A598DF3F59E /* Literal - Light (Personal use).otf */ = {isa = PBXFileReference; name = "Literal - Light (Personal use).otf"; path = "../src/assets/fonts/Literal - Light (Personal use).otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D449D982858540FA8A629F36 /* Literal - Regular (Personal use).otf */ = {isa = PBXFileReference; name = "Literal - Regular (Personal use).otf"; path = "../src/assets/fonts/Literal - Regular (Personal use).otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9978B1A4B0D94F2CA906C6ED /* Marvelous Sans Demo.otf */ = {isa = PBXFileReference; name = "Marvelous Sans Demo.otf"; path = "../src/assets/fonts/Marvelous Sans Demo.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D1B331D37FE44865A87CA83E /* MODERN SPACE.ttf */ = {isa = PBXFileReference; name = "MODERN SPACE.ttf"; path = "../src/assets/fonts/MODERN SPACE.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +181,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				ECF730DA5C1E007174C7197E /* Pods */,
+				1FF7E33CC98A4893BA286C54 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -198,6 +213,21 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		1FF7E33CC98A4893BA286C54 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				37C2D08D112442579CB8C632 /* Barton.ttf */,
+				F36AC2ACF76444E3A7246E49 /* Karu-Light.otf */,
+				B4B02CD107F745859AA6A756 /* Literal - Bold (Personal use).otf */,
+				A42AF9214A9D4A598DF3F59E /* Literal - Light (Personal use).otf */,
+				D449D982858540FA8A629F36 /* Literal - Regular (Personal use).otf */,
+				9978B1A4B0D94F2CA906C6ED /* Marvelous Sans Demo.otf */,
+				D1B331D37FE44865A87CA83E /* MODERN SPACE.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -342,6 +372,13 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				A1FEF2E3B04E42348A4AA9D2 /* Barton.ttf in Resources */,
+				2BEFC421E4C44743990C8B22 /* Karu-Light.otf in Resources */,
+				7BB79166F2144AFEA7F7268C /* Literal - Bold (Personal use).otf in Resources */,
+				9CEC296FE67E4E5AA614C7FB /* Literal - Light (Personal use).otf in Resources */,
+				8A0A02A18F604D9B8B4600C2 /* Literal - Regular (Personal use).otf in Resources */,
+				E784EED3F231400A9BD2F5C5 /* Marvelous Sans Demo.otf in Resources */,
+				9F35503E40894CFE8AC3C370 /* MODERN SPACE.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

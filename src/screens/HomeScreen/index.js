@@ -18,12 +18,12 @@ class HomeScreen extends React.Component {
   render() {
     console.log('user', this.props.auth);
     return (
-        <LinearGradient colors={['#041628', '#1D364D']} style={styles.gradient }>
+        <LinearGradient colors={['#041628', '#1D364D' , '#1D364D']} style={styles.gradient }>
 
           <View style={styles.navbar}>
             <TouchableHighlight onPress={this.logout} style={styles.logoutButton}>
               <View>
-                <Text style={{color:"white",}}>Logout</Text>
+                <Text style={styles.buttonText}>Logout</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -31,7 +31,7 @@ class HomeScreen extends React.Component {
           <View style={styles.container}>
             <TouchableHighlight onPress={() => {this.props.navigation.navigate('Schedule')}} style={styles.scheduleButton}>
               <View>
-                <Text style={{fontSize:18}}> Schedule appointments </Text>
+                <Text style={styles.scheduleButtonText}> Schedule appointments </Text>
               </View>
             </TouchableHighlight>
 
@@ -39,19 +39,19 @@ class HomeScreen extends React.Component {
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Public')}} style={styles.button}>
                 <View>
                   <Image
-                      source={require("../../assets/images/publicAppointments.png")}
+                      source={require("../../assets/images/publicIconWhite.png")}
                       style={styles.iconImage }
                   />
-                  <Text style={{textAlign:"center",}}> Public Appointments</Text>
+                  <Text style={styles.buttonText}> Public Appointments</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Search')}} style={styles.button}>
                 <View>
                   <Image
-                      source={require("../../assets/images/searchIcon.png")}
+                      source={require("../../assets/images/searchIconWhite.png")}
                       style={styles.iconImage }
                   />
-                  <Text style={{textAlign:"center",}}> Search Appointments</Text>
+                  <Text style={styles.buttonText}> Search Appointments</Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -60,19 +60,19 @@ class HomeScreen extends React.Component {
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Complete')}} style={styles.button}>
                 <View>
                   <Image
-                      source={require("../../assets/images/completeAppointment.png")}
+                      source={require("../../assets/images/finishedWhite.png")}
                       style={styles.iconImage }
                   />
-                  <Text  style={{textAlign:"center",}}> My Complete Appointments</Text>
+                  <Text style={styles.buttonText}> My Complete Appointments</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight onPress={() => {this.props.navigation.navigate('Future')}} style={styles.button}>
                 <View>
                   <Image
-                      source={require("../../assets/images/futureAppointments.png")}
-                      style={styles.iconImage }
+                      source={require("../../assets/images/futureIconWhite.png")}
+                      style={styles.futureIconImage }
                   />
-                  <Text style={{textAlign:"center",}}> Future Appointments</Text>
+                  <Text style={styles.futureButtonText}> Future Appointments</Text>
                 </View>
               </TouchableHighlight>
             </View>

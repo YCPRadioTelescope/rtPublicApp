@@ -7,18 +7,20 @@ export default StyleSheet.create({
     container:{
         width: deviceWidth,
         position:'absolute',
-        flex: 1, 
-        alignItems: 'center', 
+        flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
         marginTop:'25%',
-        
+
     },
     title:{
+        fontFamily:'Barton',
         color: 'white',
         fontSize: 32,
-        marginBottom:'20%',
+        marginBottom:'10%',
         width: deviceWidth * 0.8,
         textAlign: 'center',
+        lineHeight:50,
     },
     button: {
       marginTop: 10,
@@ -37,12 +39,15 @@ export default StyleSheet.create({
     },
     buttonText:{
         color: 'white',
+        fontFamily:'Karu-Light',
+        fontSize:20,
     },
     textInput:{
         width: deviceWidth * 0.7,
         borderBottomWidth: 1,
         height: 40,
         fontSize: 18,
+        fontFamily: 'Karu-Light',
         color: 'white',
         backgroundColor: 'rgba(0,0,0,0.4)',
         borderRadius: 5,

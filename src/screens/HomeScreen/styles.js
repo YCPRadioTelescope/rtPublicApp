@@ -2,12 +2,12 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
       button: {
-          borderWidth: 1,
-          borderColor: "#cbd7dd",
-          borderRadius: 14,
-          alignItems: 'center',
+          borderBottomWidth:1,
+          borderRightWidth:1,
+          borderColor:'#3d3d3d',
+          borderRadius: 15,
           justifyContent:'center',
-          backgroundColor: '#b7b7b7',
+          backgroundColor: '#303030',
           marginRight: 15,
           marginLeft: 15,
           height:150,
@@ -34,7 +34,7 @@ export default StyleSheet.create({
         position: 'absolute',
         top: 0,
         borderBottomWidth: 3,
-        borderColor: '#202020',
+        borderColor: '#041628',
         alignItems: 'center',
         justifyContent: 'center',
       },
@@ -50,14 +50,15 @@ export default StyleSheet.create({
         marginRight: 25
       },
       scheduleButton: {
-          borderWidth: 1,
-          borderColor: "#cbd7dd",
+          borderBottomWidth:1,
+          borderRightWidth:1,
+          borderColor:'#3d3d3d',
           borderRadius: 14,
           paddingVertical: 6,
           paddingHorizontal: 13,
           paddingLeft:30,
           justifyContent: 'center',
-          backgroundColor: '#b7b7b7',
+          backgroundColor: '#303030',
           width:'100%',
           height:'20%',
           marginBottom:30,
@@ -72,10 +73,37 @@ export default StyleSheet.create({
             position:'relative',
       },
       iconImage:{
-          marginLeft:15,
+          marginLeft:30,
           width:100,
           height:100,
+          opacity: 0.7,
       },
+    futureIconImage:{
+          marginBottom:10,
+          marginLeft:30,
+          width:105,
+          height:105,
+          opacity: 0.7,
+    },
+    buttonText:{
+          textAlign:"center",
+          color:"#d6d6d6",
+          fontFamily:'Karu-Light',
+          fontSize:15,
+    },
+    scheduleButtonText:{
+          color:"#d6d6d6",
+          fontFamily:'Karu-Light',
+          fontSize:25,
+    },
+    futureButtonText:{
+          textAlign:"center",
+          position:'relative',
+          bottom:10,
+          color:"#d6d6d6",
+          fontFamily:'Karu-Light',
+          fontSize:15,
+    }
 
 
 });
