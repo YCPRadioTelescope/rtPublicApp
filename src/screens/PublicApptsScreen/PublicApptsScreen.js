@@ -8,11 +8,13 @@ class PublicScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text>Public Appointments Screen</Text>
-        <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
-          <Image
-            source={require("../../assets/images/back.png")}
-          />
-        </TouchableHighlight>
+          <View style={styles.navbar}>
+              <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
+                  <Image
+                      source={require("../../assets/images/backWhite.png")}
+                  />
+              </TouchableHighlight>
+          </View>
       </View>
     );
   }

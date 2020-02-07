@@ -20,6 +20,5 @@ export default StyleSheet.create({
   back:{
     position: 'absolute',
     left: '10%',
-    top: '10%',
   }
 });

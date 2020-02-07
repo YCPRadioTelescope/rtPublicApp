@@ -11,7 +11,7 @@ class ScheduleScreen extends React.Component {
           <View style={styles.navbar}>
               <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
                   <Image
-                      source={require("../../assets/images/back.png")}
+                      source={require("../../assets/images/backWhite.png")}
                   />
               </TouchableHighlight>
           </View>
