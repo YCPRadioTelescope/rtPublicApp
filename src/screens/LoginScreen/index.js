@@ -1,4 +1,4 @@
-import {Text, View, TouchableHighlight, TextInput, Dimensions, ImageBackground, StyleSheet} from 'react-native';
+import {Text, View, TouchableHighlight, TextInput, Dimensions, ImageBackground, StyleSheet, Image} from 'react-native';
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import { connect } from "react-redux";
@@ -42,9 +42,14 @@ class DetailsScreen extends React.Component {
   render() {
     return (
         <View>
-          <Galaxy style={{ width:'100%', height: '100%'}} />
-
-
+        <Galaxy style={{ width:'100%', height: '100%'}} />
+        <View style={styles.navbar}>
+          <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
+            <Image
+                source={require("../../assets/images/backWhite.png")}
+            />
+          </TouchableHighlight>
+        </View>
         <View style={styles.container}>
           <Text style={styles.title}> YCAS Radio Telescope Scheduler </Text>
           <TextInput
@@ -78,7 +83,7 @@ class DetailsScreen extends React.Component {
           </TouchableHighlight>
         </View>
         </View>
-      
+
     );
   }
 }

@@ -8,15 +8,16 @@ import PublicScreen from './src/screens/PublicApptsScreen/PublicApptsScreen';
 import SearchScreen from './src/screens/SearchScreen/searchScreen';
 import CompleteScreen from './src/screens/CompleteScreen/CompleteScreen';
 import FutureScreen from './src/screens/FutureScreen/FutureScreen';
-
+import WelcomeScreen from './src/screens/WelcomeScreen/WelcomeScreen';
 
 const AuthStack = createStackNavigator(
   {
+    Welcome: WelcomeScreen,
     Login: LoginScreen,
   },
   {
     headerMode: "none",
-    initialRouteName: "Login"
+    initialRouteName: "Welcome"
   }
 );
 
@@ -24,7 +25,7 @@ const AppStack = createStackNavigator(
   {
     Home: HomeScreen,
     Schedule: ScheduleScreen,
-
+    Welcome: WelcomeScreen,
     Public: PublicScreen,
     Search: SearchScreen,
     Complete: CompleteScreen,
