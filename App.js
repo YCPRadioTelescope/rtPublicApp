@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import { Provider } from "react-redux";
 import AppContainer from './MainNavigation';
 import store from "./store";
-import Amplify from 'aws-amplify';
-import awsconfig from './aws-exports';
-import { withAuthenticator } from 'aws-amplify-react-native';
+//import Amplify from 'aws-amplify';
+// import awsconfig from './aws-exports';
+// import { withAuthenticator } from 'aws-amplify-react-native';
+//
+// Amplify.configure(awsconfig);
 
-Amplify.configure(awsconfig);
-
-default class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
@@ -18,4 +18,4 @@ default class App extends React.Component {
   }
 }
 
-export default withAuthenticator(App, true);
+//export default withAuthenticator(App, true);
