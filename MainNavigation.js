@@ -9,6 +9,7 @@ import SearchScreen from './src/screens/SearchScreen/searchScreen';
 import CompleteScreen from './src/screens/CompleteScreen/CompleteScreen';
 import FutureScreen from './src/screens/FutureScreen/FutureScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen/WelcomeScreen';
+import CreateAccountScreen from './src/screens/CreateAccountScreen';
 
 const AuthStack = createStackNavigator(
   {
@@ -30,6 +31,7 @@ const AppStack = createStackNavigator(
     Search: SearchScreen,
     Complete: CompleteScreen,
     Future: FutureScreen,
+    Create: CreateAccountScreen,
 
   },
   {

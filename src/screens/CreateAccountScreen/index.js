@@ -10,13 +10,19 @@ import Galaxy from '../../components/galaxy/Galaxy.js';
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
-class DetailsScreen extends React.Component {
+class CreateAccountScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      firstName: this.props.auth.firstName || "",
+      lastName: this.props.auth.lastName || "",
+      type: this.props.auth.type || "",
+      companyAffiliation: this.props.auth.companyAffiliation || "",
       emailAddress: this.props.auth.emailAddress || "",
+      confirmEmailAddress: this.props.auth.confirmEmailAddress || "",
       password: this.props.auth.password || "",
+      confirmPassword: this.props.auth.confirmPassword || "",
       showPassword: true,
       icEye: "eye-off-outline"
     };
@@ -35,12 +41,8 @@ class DetailsScreen extends React.Component {
     })
   };
 
-  autoHome= ( ) =>  {
-    this.props.navigation.navigate("Home");
-  }
-
-  autoCreate= ( ) => {
-      this.props.navigation.navigate("Create");
+  autoSubmit= ( ) => {
+      this.props.navigation.navigate("Home");
   }
 
   render() {
@@ -48,20 +50,52 @@ class DetailsScreen extends React.Component {
         <View>
         <Galaxy style={{ width:'100%', height: '100%'}} />
         <View style={styles.navbar}>
-          <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
+          <TouchableHighlight onPress={() => this.props.navigation.navigate("Login")} style={styles.back}>
             <Image
                 source={require("../../assets/images/backWhite.png")}
             />
           </TouchableHighlight>
         </View>
         <View style={styles.container}>
-          <Text style={styles.title}> YCAS Radio Telescope Scheduler </Text>
+          <Text style={styles.title}> New Account </Text>
           <TextInput
-            placeholder="Email"
+            placeholder="First Name"
+            autoCapitalize="none"
+            placeholderTextColor="white"
+            value={this.state.firstName}
+            onChangeText={firstName => this.setState({ firstName })}
+            style={styles.textInput}
+          />
+          <TextInput
+            placeholder="Last Name"
+            autoCapitalize="none"
+            placeholderTextColor="white"
+            value={this.state.lastName}
+            onChangeText={lastName => this.setState({ lastName })}
+            style={styles.textInput}
+          />
+          <TextInput
+            placeholder="Company Affiliation (Optional)"
+            autoCapitalize="none"
+            placeholderTextColor="white"
+            value={this.state.companyAffiliation}
+            onChangeText={companyAffiliation => this.setState({ companyAffiliation })}
+            style={styles.textInput}
+          />
+          <TextInput
+            placeholder="Email Address"
             autoCapitalize="none"
             placeholderTextColor="white"
             value={this.state.emailAddress}
             onChangeText={emailAddress => this.setState({ emailAddress })}
+            style={styles.textInput}
+          />
+          <TextInput
+            placeholder="Re-Type Email Address"
+            autoCapitalize="none"
+            placeholderTextColor="white"
+            value={this.state.confirmEmailAddress}
+            onChangeText={confirmEmailAddress => this.setState({ confirmEmailAddress })}
             style={styles.textInput}
           />
           <TextInput
@@ -72,27 +106,25 @@ class DetailsScreen extends React.Component {
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
             style={styles.textInput}
-
           />
-          <TouchableHighlight onPress={this.login} style={styles.button}>
+          <TextInput
+            placeholder="Re-Type Password"
+            secureTextEntry={this.state.showPassword}
+            autoCapitalize="none"
+            placeholderTextColor="white"
+            value={this.state.confirmPassword}
+            onChangeText={confirmPassword => this.setState({ confirmPassword })}
+            style={styles.textInput}
+          />
+
+          <TouchableHighlight onPress={this.autoSubmit} style={styles.button}>
             <View>
-              <Text style={styles.buttonText}> LOGIN </Text>
+              <Text style={styles.buttonText}> Submit </Text>
             </View>
           </TouchableHighlight>
 
-          <TouchableHighlight onPress={this.autoHome} style={styles.button}>
-            <View>
-              <Text style={styles.buttonText}> TEMP Home Button </Text>
-            </View>
-          </TouchableHighlight>
-
-          <TouchableHighlight onPress={this.autoCreate} style={styles.button}>
-            <View>
-              <Text style={styles.buttonText}> New Account </Text>
-            </View>
-          </TouchableHighlight>
         </View>
-        </View>
+       </View>
 
     );
   }
@@ -118,4 +150,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DetailsScreen);
+)(CreateAccountScreen);
