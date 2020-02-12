@@ -73,7 +73,7 @@ class ScheduleScreen extends React.Component {
                       <Text style={styles.buttonText}>Select a time</Text>
                   </TouchableHighlight>
 
-                  <TouchableHighlight style={styles.nextButton}>
+                  <TouchableHighlight onPress={() => this.props.navigation.navigate('Second')} style={styles.nextButton}>
                       <Text style={styles.buttonText}>NEXT</Text>
                   </TouchableHighlight>
 
