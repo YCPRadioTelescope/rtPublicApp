@@ -22,7 +22,7 @@ export default StyleSheet.create({
     left: '10%',
   },
   button: {
-    backgroundColor: "#4EB151",
+    backgroundColor: 'rgba(129,122,223,1)',
     paddingVertical: 11,
     paddingHorizontal: 17,
     borderRadius: 3,
@@ -32,5 +32,9 @@ export default StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600"
-  }
+  },
+  contents:{
+    position:'relative',
+    top:'7%',
+  },
 });

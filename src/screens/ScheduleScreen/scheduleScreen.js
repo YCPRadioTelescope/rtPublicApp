@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './styles';
 import CalendarPicker from 'react-native-calendar-picker';
 import TimePicker from "react-native-24h-timepicker";
+import moment from 'moment';
 
 class ScheduleScreen extends React.Component {
 
@@ -10,25 +11,29 @@ class ScheduleScreen extends React.Component {
         super(props);
         this.state = {
             selectedStartDate: null,
-            time:"",
         };
         this.onDateChange = this.onDateChange.bind(this);
     }
 
-    onDateChange(date) {
+    onDateChange(date, hour, minute) {
+        console.log(hour);
+        if(hour != null && minute != null){
+            date =  moment(date);
+            date.hour(hour);
+            date.minute(minute);
+            this.TimePicker.close();
+        }
         this.setState({
             selectedStartDate: date,
         });
+
     }
 
     onCancel() {
         this.TimePicker.close();
     }
 
-    onConfirm(hour, minute) {
-        this.setState({ time: `${hour}:${minute}` });
-        this.TimePicker.close();
-    }
+
 
 
 
@@ -45,29 +50,32 @@ class ScheduleScreen extends React.Component {
                       />
                   </TouchableHighlight>
               </View>
-              <CalendarPicker
-                  onDateChange={this.onDateChange}
-              />
+              <View style={styles.contents}>
+                  <CalendarPicker
+                      onDateChange={this.onDateChange}
+                      selectedDayColor={'rgba(129,122,223,1)'}
+                      selectedDayTextColor={'white'}
+                  />
 
-              <View>
-                  <Text>SELECTED DATE:{ startDate }</Text>
-                  <Text>SELECTED TIME: {this.state.time}</Text>
+                  <View>
+                      <Text>SELECTED DATE:{ startDate }</Text>
+                  </View>
+
+                  <TouchableHighlight
+                      onPress={() => this.TimePicker.open()}
+                      style={styles.button}
+                  >
+                      <Text style={styles.buttonText}>Select a time</Text>
+                  </TouchableHighlight>
+
+                  <TimePicker
+                      ref={ref => {
+                          this.TimePicker = ref;
+                      }}
+                      onCancel={() => this.onCancel()}
+                      onConfirm={(hour, minute) => this.onDateChange(startDate, hour, minute)}
+                  />
               </View>
-
-              <TouchableHighlight
-                  onPress={() => this.TimePicker.open()}
-                  style={styles.button}
-              >
-                  <Text style={styles.buttonText}>Select a time</Text>
-              </TouchableHighlight>
-
-              <TimePicker
-                  ref={ref => {
-                      this.TimePicker = ref;
-                  }}
-                  onCancel={() => this.onCancel()}
-                  onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
-              />
 
 
           </View>
