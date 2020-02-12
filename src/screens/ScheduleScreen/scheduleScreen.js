@@ -18,7 +18,7 @@ class ScheduleScreen extends React.Component {
     onDateChange(date, hour, minute) {
         console.log(hour);
         if(hour != null && minute != null){
-            date =  moment(date);
+            date = moment(date);
             date.hour(hour);
             date.minute(minute);
             this.TimePicker.close();
@@ -42,7 +42,6 @@ class ScheduleScreen extends React.Component {
       const startDate = selectedStartDate ? selectedStartDate.toString() : '';
       return (
           <View style={styles.container}>
-            <Text>Schedule Appointments Screen</Text>
               <View style={styles.navbar}>
                   <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
                       <Image
@@ -58,7 +57,13 @@ class ScheduleScreen extends React.Component {
                   />
 
                   <View>
-                      <Text>SELECTED DATE:{ startDate }</Text>
+                      {selectedStartDate !=null &&
+                        <Text style={styles.selected}>{moment(startDate).format('LLL')  }</Text>
+                      }
+                      {selectedStartDate ==null &&
+                      <Text style={styles.selected}> Select your date and time. </Text>
+                      }
+
                   </View>
 
                   <TouchableHighlight
@@ -66,6 +71,10 @@ class ScheduleScreen extends React.Component {
                       style={styles.button}
                   >
                       <Text style={styles.buttonText}>Select a time</Text>
+                  </TouchableHighlight>
+
+                  <TouchableHighlight style={styles.nextButton}>
+                      <Text style={styles.buttonText}>NEXT</Text>
                   </TouchableHighlight>
 
                   <TimePicker
