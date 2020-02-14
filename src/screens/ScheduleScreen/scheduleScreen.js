@@ -2,7 +2,6 @@ import {Image, Text, TouchableHighlight, View} from 'react-native';
 import React from 'react';
 import styles from './styles';
 import CalendarPicker from 'react-native-calendar-picker';
-import TimePicker from "react-native-24h-timepicker";
 import Picker from 'react-native-picker';
 import moment from 'moment';
 
@@ -12,6 +11,8 @@ class ScheduleScreen extends React.Component {
         super(props);
         this.state = {
             selectedStartDate: null,
+            dateSelected: false,
+            timeSelected: false,
         };
         this.onDateChange = this.onDateChange.bind(this);
     }
@@ -31,8 +32,12 @@ class ScheduleScreen extends React.Component {
             }
             date.hour(hour);
             date.minute(minute);
+            this.setState({
+                timeSelected:true,
+            });
         }
         this.setState({
+            dateSelected:true,
             selectedStartDate: date,
         });
     }
@@ -117,21 +122,15 @@ class ScheduleScreen extends React.Component {
                   </View>
 
 
-                  <TouchableHighlight style={styles.button} onPress={this._showTimePicker.bind(this)}>
+                  <TouchableHighlight style={styles.button} onPress={this._showTimePicker.bind(this)} disabled={!this.state.dateSelected}>
                       <Text style={styles.buttonText}>Select a time</Text>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={() => this.props.navigation.navigate('Second')} style={styles.nextButton}>
+                  <TouchableHighlight onPress={() => this.props.navigation.navigate('Second')} style={styles.nextButton} disabled={!this.state.timeSelected}>
                       <Text style={styles.buttonText}>NEXT</Text>
                   </TouchableHighlight>
 
-                  <TimePicker
-                      ref={ref => {
-                          this.TimePicker = ref;
-                      }}
-                      onCancel={() => this.onCancel()}
-                      onConfirm={(hour, minute) => this.onDateChange(startDate, hour, minute)}
-                  />
+
               </View>
 
 
