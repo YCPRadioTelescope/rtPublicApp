@@ -62,6 +62,25 @@
 		<string>Literal - Regular (Personal use).otf</string>
 		<string>Marvelous Sans Demo.otf</string>
 		<string>MODERN SPACE.ttf</string>
+		<string>Literal - Bold.otf</string>
+		<string>Literal - Light.otf</string>
+		<string>Literal - Regular.otf</string>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
 	</array>
 </dict>
 </plist>
