@@ -49,6 +49,17 @@ export default StyleSheet.create({
         right: 0,
         marginRight: 25
       },
+      feedbackButton: {
+        borderWidth: 1,
+        borderColor: "#cbd7dd",
+        borderRadius: 14,
+        paddingVertical: 6,
+        paddingHorizontal: 13,
+        alignItems: 'center',
+        position: 'absolute',
+        left: 0,
+        marginLeft: 25
+    },
       scheduleButton: {
           borderBottomWidth:1,
           borderRightWidth:1,
