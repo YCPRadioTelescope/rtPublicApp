@@ -15,6 +15,10 @@ class WelcomeScreen extends React.Component {
       //this.props.navigation.navigate();
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+      return !equals(nextProps, this.props); // equals() is your implementation
+  }
+
   render() {
     return (
       <View>

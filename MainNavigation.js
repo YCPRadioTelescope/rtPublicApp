@@ -55,13 +55,6 @@ export default createAppContainer(
   )
 );
 
-
-
-
-
-
-
-
 /*const screens = (
   {
     Home: HomeScreen,
