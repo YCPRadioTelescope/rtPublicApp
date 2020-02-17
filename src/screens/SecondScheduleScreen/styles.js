@@ -37,23 +37,26 @@ export default StyleSheet.create({
   },
   contents:{
     position:'relative',
-    top:'4%',
-    alignItems: 'center',
+    left: '10%',
     justifyContent: 'center',
     width:'100%',
   },
-  selected:{
-    position:'relative',
-    bottom:20,
-    fontSize:18,
-    textAlign: 'center',
+  dropdown:{
+    width:200,
   },
-  nextButton:{
+  private:{
+    flexDirection:'row',
+    alignItems: 'center',
+  },
+  privateText:{
+    fontSize: 18,
+  },
+  submitButton:{
     backgroundColor: 'rgba(129,122,223,1)',
     paddingVertical: 11,
     paddingHorizontal: 17,
     borderRadius: 3,
-    marginVertical: 10,
+    marginTop:'10%',
     width:'80%',
   }
 });
