@@ -3,7 +3,7 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {login} from '../LoginScreen/AuthActions';
 import {connect} from 'react-redux';
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles';
 import LinearGradient from "react-native-linear-gradient";
 

@@ -10,8 +10,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.8.0",
     "@react-native-community/datetimepicker": "^2.2.1",
     "@react-native-community/masked-view": "^0.1.6",
+    "aws-amplify": "^2.2.4",
+    "aws-amplify-react-native": "^3.2.2",
     "axios": "^0.19.2",
     "moment": "^2.24.0",
     "react": "16.9.0",
