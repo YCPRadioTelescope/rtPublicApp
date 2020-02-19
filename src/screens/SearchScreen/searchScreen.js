@@ -1,4 +1,4 @@
-import {Image, Text, TouchableHighlight, View} from 'react-native';
+import {Image, ScrollView, Text, TouchableHighlight, View} from 'react-native';
 import React from 'react';
 import styles from './styles';
 import { SearchBar } from 'react-native-elements';
@@ -25,13 +25,16 @@ class SearchScreen extends React.Component {
             {'name': 'Steve', 'id': 11, 'type': 'DRIFT_SCAN', 'RightAscension': 10.3, 'Declination':50.8},
             {'name': 'Olivia', 'id': 12, 'type': 'DRIFT_SCAN', 'RightAscension': 10.3, 'Declination':50.8}
         ],
+        results:[],
         query:'',
     }
 
     search(nameKey, myArray){
         let newArray=[];
-        for ( let i=0; i < myArray.length; i++) {
-            if (myArray[i].name === nameKey) {
+        for (let i=0; i < myArray.length; i++) {
+            if (myArray[i].name.toLowerCase().includes(nameKey)) {
+                console.log('Found matches');
+                console.log(myArray[i]);
                 newArray.push(myArray[i]);
             }
         }
@@ -40,15 +43,37 @@ class SearchScreen extends React.Component {
 
     updateSearch = query => {
         this.setState({ query });
-        const appointments = this.state;
+        const appointments = this.state.appointments;
         if (query === '') {
             return [];
         }
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return this.search(regex, appointments);
-        // TODO: populate results list
+        query = query.trim().toLowerCase();
+        this.setState({
+            results: this.search(query, appointments),
+        });
 
     };
+
+    renderAppointment(){
+        return (
+
+            <View style = {styles.allResults}>
+                {
+                    this.state.results.map((item) => (
+                        <View key = {item.id} style = {styles.result}>
+                            <View style = {styles.text}>
+                                <Text style = {styles.name}>{item.name}'s Appointment</Text>
+                                <Text style = {styles.type}>{item.type}</Text>
+                                <Text style = {styles.RightAscension}> RightAscension: {item.RightAscension}</Text>
+                                <Text style = {styles.Declination}> Declination: {item.Declination}</Text>
+                            </View>
+                        </View>
+                    ))
+                }
+
+            </View>
+        );
+    }
 
 
 
@@ -56,8 +81,8 @@ class SearchScreen extends React.Component {
       const { query } = this.state;
     return (
       <View style={styles.container}>
-        <Text>Search Appointments Screen</Text>
           <View style={styles.navbar}>
+              <Text style={styles.title}>Search</Text>
               <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
                   <Image
                       source={require("../../assets/images/backWhite.png")}
@@ -69,8 +94,18 @@ class SearchScreen extends React.Component {
               placeholder="Type Here..."
               onChangeText={this.updateSearch}
               value={query}
-              containerStyle={{width:'100%'}}
+              containerStyle={styles.searchBar}
           />
+
+          <View >
+              {this.state.results.length > 0 ? (
+                  this.renderAppointment()
+              ) : (
+                  <Text style={styles.infoText}>
+                      Search for an appointment
+                  </Text>
+              )}
+          </View>
 
       </View>
     );
