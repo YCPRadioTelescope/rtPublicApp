@@ -95,7 +95,7 @@ class SearchScreen extends React.Component {
               containerStyle={styles.searchBar}
           />
 
-          <View >
+
               {this.state.results.length > 0 ? (
                   this.renderAppointment()
               ) : (
@@ -103,7 +103,6 @@ class SearchScreen extends React.Component {
                       Search for an appointment
                   </Text>
               )}
-          </View>
 
       </View>
     );

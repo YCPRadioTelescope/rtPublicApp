@@ -70,5 +70,12 @@ export default StyleSheet.create({
     color:'white',
     fontSize:14,
   },
+  infoText:{
+    fontFamily:'Barton',
+    color:'#c8c9cb',
+    fontSize:15,
+    position:'relative',
+    top:300,
+  }
 
 });
