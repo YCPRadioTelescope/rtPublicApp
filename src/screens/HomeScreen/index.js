@@ -14,6 +14,10 @@ class HomeScreen extends React.Component {
     AsyncStorage.clear();
     this.props.navigation.navigate('Login');
   };
+  feedback = () => {
+    console.log('feedback');
+    this.props.navigation.navigate('Feedback');
+  };
 
   render() {
     console.log('user', this.props.auth);
@@ -24,6 +28,11 @@ class HomeScreen extends React.Component {
             <TouchableHighlight onPress={this.logout} style={styles.logoutButton}>
               <View>
                 <Text style={styles.buttonText}>Logout</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={this.feedback} style={styles.feedbackButton}>
+              <View>
+                <Text style={styles.buttonText}>Feedback</Text>
               </View>
             </TouchableHighlight>
           </View>

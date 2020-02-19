@@ -11,6 +11,7 @@ import CompleteScreen from './src/screens/CompleteScreen/CompleteScreen';
 import FutureScreen from './src/screens/FutureScreen/FutureScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen/WelcomeScreen';
 import CreateAccountScreen from './src/screens/CreateAccountScreen';
+import FeedbackScreen from "./src/screens/FeedbackScreen/FeedbackScreen";
 
 const AuthStack = createStackNavigator(
   {
@@ -34,7 +35,7 @@ const AppStack = createStackNavigator(
     Complete: CompleteScreen,
     Future: FutureScreen,
     Create: CreateAccountScreen,
-
+    Feedback: FeedbackScreen,
   },
   {
     initialRouteName: "Home",
