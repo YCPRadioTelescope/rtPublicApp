@@ -75,5 +75,24 @@ export default StyleSheet.create({
     color:'white',
     fontSize:14,
   },
-
+  button: {
+    marginTop: 200,
+    borderWidth: 0,
+    borderColor: "#cbd7dd",
+    borderRadius: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 13,
+    alignItems: 'center',
+    backgroundColor: 'rgba(129,122,223,1)',
+    width: deviceWidth * 0.5,
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
+  buttonText:{
+    color: 'white',
+    fontFamily:'Karu-Light',
+    fontSize:20,
+  },
 });

@@ -10,6 +10,9 @@ class PublicScreen extends React.Component {
           appointments: 0,
       };
   }
+    showAppoints = () =>{
+        this.setState({appointments: 1})
+    };
   render() {
     console.log('Public', this.props.auth);
     if(!this.state.appointments){
@@ -30,15 +33,19 @@ class PublicScreen extends React.Component {
                         <Text style = {styles.type}>Tap here to add an appointment </Text>
                     </View>
                 </TouchableHighlight>
-
+                <TouchableHighlight onPress={this.showAppoints} style={styles.button}>
+                    <View>
+                        <Text style={styles.buttonText}> TEMP show appts </Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         );
     }
     else{
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Public Appointments Screen</Text>
                 <View style={styles.navbar}>
+                    <Text style={styles.title}>Public Appointments Screen</Text>
                     <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
                         <Image
                             source={require("../../assets/images/backWhite.png")}
