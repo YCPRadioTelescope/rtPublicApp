@@ -57,5 +57,11 @@ export default StyleSheet.create({
         marginBottom: '3%',
         paddingLeft: '3%',
     },
+    title:{
+        position: 'relative',
+        fontFamily:'Barton',
+        color:'#c8c9cb',
+        fontSize:18,
+    },
 
 });

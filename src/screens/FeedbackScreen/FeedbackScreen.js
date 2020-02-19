@@ -14,10 +14,11 @@ class FeedbackScreen extends React.Component {
         alert("Sorry! This feature is not implemented yet")
     }
     render() {
+        console.log('Feedback', this.props.auth);
         return (
             <View style={styles.container}>
-                <Text>Feedback</Text>
                 <View style={styles.navbar}>
+                    <Text style={styles.title}>Feedback</Text>
                     <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
                         <Image
                             source={require("../../assets/images/backWhite.png")}
