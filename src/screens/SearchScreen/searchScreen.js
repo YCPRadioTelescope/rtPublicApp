@@ -33,8 +33,6 @@ class SearchScreen extends React.Component {
         let newArray=[];
         for (let i=0; i < myArray.length; i++) {
             if (myArray[i].name.toLowerCase().includes(nameKey)) {
-                console.log('Found matches');
-                console.log(myArray[i]);
                 newArray.push(myArray[i]);
             }
         }
@@ -57,7 +55,7 @@ class SearchScreen extends React.Component {
     renderAppointment(){
         return (
 
-            <View style = {styles.allResults}>
+            <ScrollView style = {styles.allResults}>
                 {
                     this.state.results.map((item) => (
                         <View key = {item.id} style = {styles.result}>
@@ -71,7 +69,7 @@ class SearchScreen extends React.Component {
                     ))
                 }
 
-            </View>
+            </ScrollView>
         );
     }
 
