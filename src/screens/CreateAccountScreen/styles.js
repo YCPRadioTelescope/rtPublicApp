@@ -7,25 +7,28 @@ export default StyleSheet.create({
     container:{
         width: deviceWidth,
         position:'absolute',
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop:'25%',
-
+        marginTop:'15%',
     },
     title:{
         fontFamily:'Barton',
         color: 'white',
-        fontSize: 32,
-        marginBottom:'10%',
-        width: deviceWidth * 0.8,
+        fontSize: 28,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
         textAlign: 'center',
-        lineHeight:50,
+        marginTop: '10%',
+    },
+    keyboard:{
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     button: {
       marginTop: 10,
       borderWidth: 0,
-      borderColor: "#cbd7dd",
+      borderColor: "#670e96",
       borderRadius: 20,
       paddingVertical: 6,
       paddingHorizontal: 13,
@@ -57,16 +60,13 @@ export default StyleSheet.create({
     navbar: {
         width: '100%',
         height: '13%',
-       // backgroundColor: '#303030',
         position: 'absolute',
         top: 0,
-        //borderBottomWidth: 3,
-        //borderColor: '#041628',
         alignItems: 'center',
         justifyContent: 'center',
     },
     back:{
         position: 'absolute',
-        left: '10%',
+        left: '4%',
     }
 });
