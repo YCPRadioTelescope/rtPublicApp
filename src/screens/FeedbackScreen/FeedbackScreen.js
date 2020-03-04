@@ -4,6 +4,7 @@ import styles from './styles';
 import {bindActionCreators} from 'redux';
 import {feedback} from "./FeedbackActions";
 import {connect} from "react-redux";
+import AsyncStorage from '@react-native-community/async-storage';
 
 class FeedbackScreen extends React.Component {
 
@@ -11,16 +12,30 @@ class FeedbackScreen extends React.Component {
         super(props);
         this.state = {
             feedbackText: null,
+            name: "publicapptestname"
         };
     }
     sendFeedback = async () =>{
-        await this.props.feedback("test", "test").then(response => {
-            console.log('response', response);
-            if(response.type === "FEEDBACK_SUCCESS"){
-                alert("Feedback Sent Successfully")
+        await this.props.feedback(this.state.name, this.state.feedbackText).then(response => {
+            /*
+            check if feedback is valid.
+            Database checks if null and if feedbackText is greater then 100 chars
+            but it wouldnt hurt to check here as well
+            */
+            if(!this.state.feedbackText){
+                alert("Error. Feedback cannot be null" )
+            }
+            else if(this.state.feedbackText.length>100){
+                alert("Error. Feedback must be 100 characters or less" )
             }
             else{
-                alert("Looks like the stars did not align correctly!  Please try to send your feedback again.")
+                console.log('response'+ response);
+                if(response.type === "FEEDBACK_SUCCESS"){
+                    alert("Feedback Sent Successfully" )
+                }
+                else{
+                    alert("Error: Could Not Send Feedback. Error Code: "+ response.feed.statusCode+ " Reason: "+response.feed.statusReason)
+                }
             }
         })
 

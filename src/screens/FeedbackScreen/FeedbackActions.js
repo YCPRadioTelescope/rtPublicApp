@@ -24,11 +24,12 @@ export const feedbackFailure = error => {
 export const feedback = (name, comments) => {
     this.set;
     let reqBody = {
-        "name": "feedbackfrompublicapp",
+        "name": name,
         "priority": 1 ,
-        "comments": "testingfeedbackfrompublicapp"
+        "comments": comments
     };
     return dispatch => {
+        console.log("name is: "+name +" comments is: "+comments);
         return axios
             .post(`${url}/api/feedback`,reqBody)
             .then(response => {
