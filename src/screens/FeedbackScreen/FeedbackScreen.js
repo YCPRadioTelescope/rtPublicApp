@@ -1,6 +1,9 @@
 import {Image, Text, TextInput, TouchableHighlight, View} from 'react-native';
 import React from 'react';
 import styles from './styles';
+import {bindActionCreators} from 'redux';
+import {feedback} from "./FeedbackActions";
+import {connect} from "react-redux";
 
 class FeedbackScreen extends React.Component {
 
@@ -10,8 +13,17 @@ class FeedbackScreen extends React.Component {
             feedbackText: null,
         };
     }
-    sendFeedback(){
-        alert("Sorry! This feature is not implemented yet")
+    sendFeedback = async () =>{
+        await this.props.feedback("test", "test").then(response => {
+            console.log('response', response);
+            if(response.type === "FEEDBACK_SUCCESS"){
+                alert("Feedback Sent Successfully")
+            }
+            else{
+                alert("Looks like the stars did not align correctly!  Please try to send your feedback again.")
+            }
+        })
+
     }
     render() {
         console.log('Feedback', this.props.auth);
@@ -45,5 +57,25 @@ class FeedbackScreen extends React.Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
 
-export default FeedbackScreen ;
+        /*errorResponse: email.errorResponse,
+        errorMessage: email.errorMessage,
+        errorResponse: approveUser.errorResponse,
+        errorMessage: approveUser.errorMessage,*/
+    };
+};
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            feedback,
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FeedbackScreen);
