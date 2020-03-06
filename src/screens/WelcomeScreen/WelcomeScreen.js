@@ -15,6 +15,12 @@ class WelcomeScreen extends React.Component {
       //this.props.navigation.navigate();
   }
 
+//    <TouchableHighlight onPress={this.autoHome} style={styles.button}>
+//        <View>
+//            <Text style={styles.buttonText}> TEMP Home Button </Text>
+//        </View>
+//    </TouchableHighlight>
+
   shouldComponentUpdate(nextProps, nextState){
       return !equals(nextProps, this.props); // equals() is your implementation
   }
@@ -29,11 +35,6 @@ class WelcomeScreen extends React.Component {
           <TouchableHighlight onPress={this.gotoLogin} style={styles.button}>
               <View>
                   <Text style={styles.buttonText}> LOGIN </Text>
-              </View>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={this.autoHome} style={styles.button}>
-              <View>
-                  <Text style={styles.buttonText}> TEMP Home Button </Text>
               </View>
           </TouchableHighlight>
           <TouchableHighlight onPress={this.gotoCredits} style={styles.button}>

@@ -1,11 +1,23 @@
-import {Text, View, TouchableHighlight, TextInput, Dimensions, ImageBackground, StyleSheet, Image} from 'react-native';
+import {
+Text,
+View,
+Alert,
+TouchableHighlight,
+TextInput,
+Dimensions,
+ImageBackground,
+StyleSheet,
+Image,
+SafeAreaView,
+KeyboardAvoidingView,
+ScrollView} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import { connect } from "react-redux";
-import {login} from './AuthActions';
+import { signup } from './AuthActions';
 import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles';
-import Galaxy from '../../components/galaxy/Galaxy.js';
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -17,23 +29,24 @@ class CreateAccountScreen extends React.Component {
     this.state = {
       firstName: this.props.auth.firstName || "",
       lastName: this.props.auth.lastName || "",
-      type: this.props.auth.type || "",
-      companyAffiliation: this.props.auth.companyAffiliation || "",
       emailAddress: this.props.auth.emailAddress || "",
-      confirmEmailAddress: this.props.auth.confirmEmailAddress || "",
+      emailConfirm: this.props.auth.emailConfirm || "",
+      phoneNumber: this.props.auth.phoneNumber || "",
+      company: this.props.auth.company || "",
       password: this.props.auth.password || "",
-      confirmPassword: this.props.auth.confirmPassword || "",
-      showPassword: true,
-      icEye: "eye-off-outline"
+      passwordConfirm: this.props.auth.passwordConfirm || "",
+      categoryOfService: this.props.auth.categoryOfService || "GUEST",
+      hidePassword: false,
     };
   }
 
 
-  login = async () => {
-    await this.props.login(this.state.emailAddress, this.state.password).then(response => {
+  signUp = async () => {
+    await this.props.signup(this.state.firstName, this.state.lastName, this.state.emailAddress, this.state.emailConfirm, this.state.phoneNumber, this.state.password, this.state.passwordConfirm, this.state.company, this.state.categoryOfService).then(response => {
       console.log('response', response);
-      if(response.type === "LOGIN_SUCCESS"){
-        this.props.navigation.navigate("Home");
+      if(response.type === "SIGNUP_SUCCESS"){
+        alert("Thank you for signing up with us. Once approved, follow the instructions sent to your email in order to sign in.")
+        this.props.navigation.navigate("Login");
       }
       else{
         alert("Looks like the stars did not align correctly!  Please try to login again.")
@@ -41,23 +54,23 @@ class CreateAccountScreen extends React.Component {
     })
   };
 
-  autoSubmit= ( ) => {
-      this.props.navigation.navigate("Home");
-  }
-
   render() {
     return (
-        <View>
-        <Galaxy style={{ width:'100%', height: '100%'}} />
-        <View style={styles.navbar}>
-          <TouchableHighlight onPress={() => this.props.navigation.navigate("Login")} style={styles.back}>
-            <Image
-                source={require("../../assets/images/backWhite.png")}
-            />
-          </TouchableHighlight>
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.title}> New Account </Text>
+        <ScrollView style={{backgroundColor:'#012545'}}>
+         <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={styles.keyboard}
+            scrollEnabled={false}
+          >
+         <View style={styles.navbar}>
+           <TouchableHighlight onPress={() => this.props.navigation.navigate("Login")} style={styles.back}>
+             <Image
+                 source={require("../../assets/images/backWhite.png")}
+             />
+           </TouchableHighlight>
+          </View>
+        <Text style={styles.title}> New Account </Text>
+          <View style={{marginTop:'20%'}}>
           <TextInput
             placeholder="First Name"
             autoCapitalize="none"
@@ -75,14 +88,6 @@ class CreateAccountScreen extends React.Component {
             style={styles.textInput}
           />
           <TextInput
-            placeholder="Company Affiliation (Optional)"
-            autoCapitalize="none"
-            placeholderTextColor="white"
-            value={this.state.companyAffiliation}
-            onChangeText={companyAffiliation => this.setState({ companyAffiliation })}
-            style={styles.textInput}
-          />
-          <TextInput
             placeholder="Email Address"
             autoCapitalize="none"
             placeholderTextColor="white"
@@ -94,13 +99,13 @@ class CreateAccountScreen extends React.Component {
             placeholder="Re-Type Email Address"
             autoCapitalize="none"
             placeholderTextColor="white"
-            value={this.state.confirmEmailAddress}
-            onChangeText={confirmEmailAddress => this.setState({ confirmEmailAddress })}
+            value={this.state.emailConfirm}
+            onChangeText={emailConfirm => this.setState({ emailConfirm })}
             style={styles.textInput}
           />
           <TextInput
             placeholder="Password"
-            secureTextEntry={this.state.showPassword}
+            secureTextEntry={this.state.hidePassword}
             autoCapitalize="none"
             placeholderTextColor="white"
             value={this.state.password}
@@ -109,23 +114,37 @@ class CreateAccountScreen extends React.Component {
           />
           <TextInput
             placeholder="Re-Type Password"
-            secureTextEntry={this.state.showPassword}
+            secureTextEntry={this.state.hidePassword}
             autoCapitalize="none"
             placeholderTextColor="white"
-            value={this.state.confirmPassword}
-            onChangeText={confirmPassword => this.setState({ confirmPassword })}
+            value={this.state.passwordConfirm}
+            onChangeText={passwordConfirm => this.setState({ passwordConfirm })}
             style={styles.textInput}
           />
-
-          <TouchableHighlight onPress={this.autoSubmit} style={styles.button}>
+          <TextInput
+            placeholder="Company Affiliation (Optional)"
+            autoCapitalize="none"
+            placeholderTextColor="white"
+            value={this.state.company}
+            onChangeText={company => this.setState({ company })}
+            style={styles.textInput}
+          />
+          <TextInput
+            placeholder="Phone Number"
+            autoCapitalize="none"
+            placeholderTextColor="white"
+            value={this.state.phoneNumber}
+            onChangeText={phoneNumber => this.setState({ phoneNumber })}
+            style={styles.textInput}
+          />
+          </View>
+          <TouchableHighlight onPress={this.signUp} style={styles.button}>
             <View>
               <Text style={styles.buttonText}> Submit </Text>
             </View>
           </TouchableHighlight>
-
-        </View>
-       </View>
-
+        </KeyboardAwareScrollView>
+       </ScrollView>
     );
   }
 }
@@ -142,7 +161,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      login,
+      signup,
     },
     dispatch
   );
