@@ -35,8 +35,8 @@ class CreateAccountScreen extends React.Component {
       company: this.props.auth.company || "",
       password: this.props.auth.password || "",
       passwordConfirm: this.props.auth.passwordConfirm || "",
-      categoryOfService: "GUEST",
-      hidePassword: true,
+      categoryOfService: this.props.auth.categoryOfService || "GUEST",
+      hidePassword: false,
     };
   }
 
@@ -152,9 +152,9 @@ class CreateAccountScreen extends React.Component {
 const mapStateToProps = state => {
   const { user } = state;
   return {
-    signup: user.signup,
-    errorResponse: user.signup.errorResponse,
-    errorMessage: user.signup.errorMessage
+    auth: user.auth,
+    errorResponse: user.auth.errorResponse,
+    errorMessage: user.auth.errorMessage
   };
 };
 
