@@ -53,7 +53,7 @@ class ScheduleScreen extends React.Component {
         for(let i=1;i<13;i++){
             hours.push(i);
         }
-        for(let i=1;i<61;i++){
+        for(let i=0;i<60;i++){
             minutes.push(i);
         }
         let pickerData = [hours, minutes, ['AM', 'PM']];
