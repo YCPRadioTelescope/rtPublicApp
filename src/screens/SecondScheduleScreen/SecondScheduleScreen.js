@@ -18,6 +18,7 @@ class SecondScheduleScreen extends React.Component {
     render() {
         const { checked } = this.state;
 
+        // TODO: figure out what data the dropdowns really need
         let data = [{
             value: 'Banana',
         }, {
@@ -25,6 +26,10 @@ class SecondScheduleScreen extends React.Component {
         }, {
             value: 'Pear',
         }];
+
+        const date = this.props.navigation.getParam('startDate');
+        console.log('Date is still:', date);
+
 
       return (
           <View style={styles.container}>

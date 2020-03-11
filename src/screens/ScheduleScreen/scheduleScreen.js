@@ -95,6 +95,8 @@ class ScheduleScreen extends React.Component {
     render() {
       const { selectedStartDate } = this.state;
       const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+      const date =  this.state.selectedStartDate;
+      console.log(date);
       return (
           <View style={styles.container}>
               <View style={styles.navbar}>
@@ -126,7 +128,7 @@ class ScheduleScreen extends React.Component {
                       <Text style={styles.buttonText}>Select a time</Text>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={() => this.props.navigation.navigate('Second')} style={styles.nextButton} disabled={!this.state.timeSelected}>
+                  <TouchableHighlight onPress={() => this.props.navigation.navigate('Second', {startDate:date })} style={styles.nextButton} disabled={!this.state.timeSelected}>
                       <Text style={styles.buttonText}>NEXT</Text>
                   </TouchableHighlight>
 
