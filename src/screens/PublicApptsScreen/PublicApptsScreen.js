@@ -2,20 +2,54 @@ import {Image, ScrollView, Text, TouchableHighlight, View} from 'react-native';
 import React from 'react';
 import styles from './styles';
 import ScrollElements from "../../components/scrollview/ScrollView";
+import {PUBLIC_SUCCESS, publicAppts} from "./PublicActions";
+import {bindActionCreators} from "redux";
+import {feedback} from "../FeedbackScreen/FeedbackActions";
+import {connect} from "react-redux";
 
 class PublicScreen extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-          appointments: 0,
+          showAppointments: 0,
+          content: [],
+          userId: 2,
+          page: 0,
+          size: 10,
+
       };
   }
-    showAppoints = () =>{
-        this.setState({appointments: 1})
-    };
+    async getData(){
+
+        await this.props.publicAppts(this.state.userId,this.state.page,this.state.size).then(response => {
+            //this.setState({isLoading: false});'
+            let statusCode = response.publicAppointments.statusCode;
+            console.log("Getting the User's public appointments response: "+ statusCode)
+
+            if(response.type == PUBLIC_SUCCESS){
+                this.setState({content: response.publicAppointments.data.content})
+            }
+            else{
+                alert("Error: Could Not Get Public Appointments. Error Code: "+ response.feed.statusCode+ " Reason: "+response.feed.statusReason)
+            }
+            //console.log("Appointment content: "+this.state.content)
+
+        })
+    }
+    componentDidMount() {
+        this.focusListener = this.props.navigation.addListener("didFocus", () => {
+            console.log('Public Appointments: Listener activated');
+            this.getData();
+        });
+
+
+    }
+  showAppoints = () =>{
+      this.setState({showAppointments: 1})
+  };
   render() {
-    console.log('Public', this.props.auth);
-    if(!this.state.appointments){
+    console.log('Public Appointment content', this.state.content);
+    if(!this.state.showAppointments){
         return (
             <View style={styles.container}>
                 <View style={styles.navbar}>
@@ -63,4 +97,29 @@ class PublicScreen extends React.Component {
   }
 }
 
-export default PublicScreen;
+const mapStateToProps = state => {
+   // const { appoints } = state;
+    //console.log("Getting public appoints = state in MapStateToProps",appoints);
+    return {
+
+        /*
+        errorResponse: appoints.errorResponse,
+        errorMessage: appoints.errorMessage,
+        */
+        //appointments: appoints.publicAppointments
+    };
+};
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            publicAppts,
+        },
+        dispatch
+    );
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PublicScreen);

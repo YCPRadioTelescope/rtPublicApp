@@ -18,7 +18,7 @@ const INITIAL_STATE = {
 
 };
 const publicReducer = (state = INITIAL_STATE, action) => {
-    console.log("ACTION feedback", action);
+    console.log("ACTION Public Appointments", action);
     switch (action.type) {
         // Don't think this gets called
         case PUBLIC:
@@ -35,7 +35,6 @@ const publicReducer = (state = INITIAL_STATE, action) => {
                 loading: false,
                 isLoading: false,
                 errorResponse: false,
-                content: action.content,
                 ...action.feed
             };
         // Extract error message to display
