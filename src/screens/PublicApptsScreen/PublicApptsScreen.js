@@ -88,7 +88,22 @@ class PublicScreen extends React.Component {
                 </View>
 
                 <View style={styles.scroll}>
-                    <ScrollElements />
+                    <ScrollView style = {styles.element}>
+                        {
+                            this.state.content.map((item, index) => (
+                                <View key = {item.id} style = {styles.item}>
+                                    <View style = {styles.text}>
+                                        <Text style = {styles.name}>{item.userFirstName}'s Appointment</Text>
+                                        <Text style = {styles.type}>Type: {item.type} Status: {item.status}</Text>
+                                        <Text style = {styles.RightAscension}> Start Time: {item.startTime} </Text>
+                                        <Text style = {styles.Declination}> End Time: {item.endTime}</Text>
+                                        <Text style = {styles.RightAscension}> RightAscension: {item.rightAscension}</Text>
+                                        <Text style = {styles.Declination}> Declination: {item.declination}</Text>
+                                    </View>
+                                </View>
+                            ))
+                        }
+                    </ScrollView>
                 </View>
             </View>
         );
