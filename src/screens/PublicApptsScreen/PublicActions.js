@@ -1,7 +1,6 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 const url = "https://prod-api.ycpradiotelescope.com/";
 export const PUBLIC = "PUBLIC";
 export const PUBLIC_SUCCESS = "PUBLIC_SUCCESS";
@@ -26,7 +25,7 @@ export const publicAppts = (userId, page, size) => {
     let options = {
         'headers': {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqY29uc3RhbnRpbmVAeWNwLmVkdSIsImV4cCI6MTU4NDcyMjE3OX0.mI_ws-NoW9rYgSfLzQuYJC1D98V-Y1cn0nq2N3IzOin2QbNGjMlXmjyB47Ks254XNIGN3LA32AWbVZBFysZrdg'
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqY29uc3RhbnRpbmVAeWNwLmVkdSIsImV4cCI6MTU4NTc1OTg0OX0.FiYqtZsk2QrWPWbDn6fAK66rTQe0RE3Vds22Z-Ex5smps2Vtu5HuIn8Xiu_7JxElNfsOTttldryoNe7RzpQLZg',
         },
     };
     return dispatch => {
