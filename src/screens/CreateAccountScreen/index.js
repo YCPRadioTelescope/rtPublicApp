@@ -36,7 +36,7 @@ class CreateAccountScreen extends React.Component {
       password: this.props.auth.password || "",
       passwordConfirm: this.props.auth.passwordConfirm || "",
       categoryOfService: this.props.auth.categoryOfService || "GUEST",
-      hidePassword: false,
+      hidePassword: true,
     };
   }
 

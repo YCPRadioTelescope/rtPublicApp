@@ -18,9 +18,12 @@ class HomeScreen extends React.Component {
     console.log('feedback');
     this.props.navigation.navigate('Feedback');
   };
+  notifications = () => {
+    this.props.navigation.navigate('Notifications');
+  };
 
   render() {
-    console.log('user', this.props.auth);
+    console.log('user:', AsyncStorage.getItem('user'));
     return (
         <LinearGradient colors={['#041628', '#1D364D' , '#1D364D']} style={styles.gradient }>
 
@@ -35,8 +38,15 @@ class HomeScreen extends React.Component {
                 <Text style={styles.buttonText}>Feedback</Text>
               </View>
             </TouchableHighlight>
+            <TouchableHighlight onPress={this.notifications} style={styles.notifButton}>
+              <View>
+                <Image
+                  source={require("../../assets/images/notification_settings_icon.png")}
+                  style={styles.iconImageNotif }
+                />
+              </View>
+            </TouchableHighlight>
           </View>
-
           <View style={styles.container}>
             <TouchableHighlight onPress={() => {this.props.navigation.navigate('Schedule')}} style={styles.scheduleButton}>
               <View>

@@ -49,6 +49,14 @@ export default StyleSheet.create({
         right: 0,
         marginRight: 25
       },
+      notifButton: {
+        borderColor: "#cbd7dd",
+        borderRadius: 14,
+        paddingVertical: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
+      },
       feedbackButton: {
         borderWidth: 1,
         borderColor: "#cbd7dd",
@@ -88,6 +96,14 @@ export default StyleSheet.create({
           width:100,
           height:100,
           opacity: 0.7,
+      },
+      iconImageNotif:{
+          marginLeft: 10,
+          marginRight: 10,
+          width: 50,
+          height: 50,
+          opacity: 0.7,
+          justifyContent: 'center',
       },
     futureIconImage:{
           marginBottom:10,
