@@ -54,6 +54,6 @@ export default StyleSheet.create({
     paddingHorizontal: 17,
     borderRadius: 3,
     marginVertical: 10,
-    width:'80%',
+    width:'18%',
   }
 });

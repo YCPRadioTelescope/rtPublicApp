@@ -4,7 +4,11 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+  subContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   navbar: {
     width: '100%',
@@ -21,6 +25,21 @@ export default StyleSheet.create({
     position: 'absolute',
     left: '10%',
   },
+  title:{
+    position: 'relative',
+    fontFamily:'Barton',
+    color:'#c8c9cb',
+    fontSize:20,
+  },
+  subTitle:{
+    position: 'relative',
+    fontFamily:'Barton',
+    color:'#c8c9cb',
+    fontSize:16,
+    marginBottom: 30,
+    marginTop: 30,
+    textAlign: 'center',
+  },
   button: {
     backgroundColor: 'rgba(129,122,223,1)',
     paddingVertical: 11,
@@ -29,34 +48,36 @@ export default StyleSheet.create({
     marginVertical: 10,
     width:'40%',
   },
-  buttonText: {
+  subText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: "600",
     textAlign: 'center',
+    borderWidth: 1,
+    borderColor: "#cbd7dd",
+    borderRadius: 14,
+    paddingVertical: 6,
+    paddingHorizontal: 13,
   },
   contents:{
     position:'relative',
-    left: '3%',
+    top:'4%',
+    alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
   },
-  dropdown:{
-    width:'93%',
+  selected:{
+    position:'relative',
+    bottom:20,
+    fontSize:18,
+    textAlign: 'center',
   },
-  private:{
-    flexDirection:'row',
-    alignItems: 'center',
-  },
-  privateText:{
-    fontSize: 18,
-  },
-  submitButton:{
+  nextButton:{
     backgroundColor: 'rgba(129,122,223,1)',
     paddingVertical: 11,
     paddingHorizontal: 17,
     borderRadius: 3,
-    marginTop:'10%',
+    marginVertical: 10,
     width:'80%',
   }
 });

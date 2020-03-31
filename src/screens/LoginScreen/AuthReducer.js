@@ -9,24 +9,11 @@ import {
 } from "./AuthActions";
 
 const INITIAL_STATE = {
-  userId: null,
-  userName: null,
-  jwt: null,
-  emailAddress: null,
-  fullName: null,
   loading: false,
   errorMessage: null,
   loginError: false,
-  loadingUser: true,
   errorResponse: false
 };
-async function storeJwt({ jwt }) {
-  try {
-    await AsyncStorage.setItem("jwt", jwt);
-  } catch (e) {
-    throw new Error("Error saving JWT token");
-  }
-}
 
 const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -39,12 +26,9 @@ const authReducer = (state = INITIAL_STATE, action) => {
       };
     // Take all returned user info and put it in store
     case LOGIN_SUCCESS:
-      let jwt = action.user.jwt === null ? "" : action.user.jwt;
-      //storeJwt({ jwt: jwt });
       return {
         ...state,
         loading: false,
-        isLoading: false,
         loginError: false,
         loadingUser: false,
         errorResponse: false,
@@ -56,7 +40,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         loginError: true,
-        isLoading: false,
         errorResponse: true,
         errorMessage: action.error
       };

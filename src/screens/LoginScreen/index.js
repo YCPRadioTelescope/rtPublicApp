@@ -3,14 +3,16 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import { connect } from "react-redux";
 import {login} from './AuthActions';
+import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles';
 import Galaxy from '../../components/galaxy/Galaxy.js';
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
+const url = "https://prod-api.ycpradiotelescope.com";
 
-class DetailsScreen extends React.Component {
+class LoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -22,25 +24,23 @@ class DetailsScreen extends React.Component {
     };
   }
 
-
-  login = async () => {
-    await this.props.login(this.state.emailAddress, this.state.password).then(response => {
-      console.log('response', response);
-      if(response.type === "LOGIN_SUCCESS"){
-        this.props.navigation.navigate("Home");
-      }
-      else{
+  indexLogin = async () => {
+    this.props.login(this.state.emailAddress, this.state.password).then(response => {
+      if (response.type === "LOGIN_SUCCESS") {
+        console.log("Credentials are good.");
+        this.autoHome();
+      } else {
         alert("Looks like the stars did not align correctly!  Please try to login again.")
       }
-    })
+    });
   };
 
-  autoHome= ( ) =>  {
+  autoHome = () =>  {
     this.props.navigation.navigate("Home");
   }
 
-  autoCreate= ( ) => {
-      this.props.navigation.navigate("Create");
+  autoCreate = () => {
+    this.props.navigation.navigate("Create");
   }
 
   render() {
@@ -74,7 +74,7 @@ class DetailsScreen extends React.Component {
             style={styles.textInput}
 
           />
-          <TouchableHighlight onPress={this.login} style={styles.button}>
+          <TouchableHighlight onPress={this.indexLogin.bind(this)} style={styles.button}>
             <View>
               <Text style={styles.buttonText}> LOGIN </Text>
             </View>
@@ -102,8 +102,8 @@ const mapStateToProps = state => {
   const { user } = state;
   return {
     auth: user.auth,
-    errorResponse: user.auth.errorResponse,
-    errorMessage: user.auth.errorMessage
+    errorResponse: user.errorResponse,
+    errorMessage: user.errorMessage
   };
 };
 
@@ -118,4 +118,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DetailsScreen);
+)(LoginScreen);
