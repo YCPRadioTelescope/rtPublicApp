@@ -13,6 +13,7 @@ import WelcomeScreen from './src/screens/WelcomeScreen/WelcomeScreen';
 import CreateAccountScreen from './src/screens/CreateAccountScreen';
 import FeedbackScreen from "./src/screens/FeedbackScreen/FeedbackScreen";
 import NotificationSettingsScreen from "./src/screens/NotificationSettingsScreen/";
+import endDateScreen from "./src/screens/SecondScheduleScreen/endDateScreen";
 
 const AuthStack = createStackNavigator(
   {
@@ -29,6 +30,7 @@ const AppStack = createStackNavigator(
   {
     Home: HomeScreen,
     Schedule: ScheduleScreen,
+    EndDate: endDateScreen,
       Second: SecondScheduleScreen,
     Welcome: WelcomeScreen,
     Public: PublicScreen,

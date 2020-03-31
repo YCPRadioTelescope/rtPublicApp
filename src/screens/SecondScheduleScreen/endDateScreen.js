@@ -1,18 +1,18 @@
 import {Image, Text, TouchableHighlight, View} from 'react-native';
 import React from 'react';
-import styles from './styles';
+import styles from './endStyles';
 import CalendarPicker from 'react-native-calendar-picker';
 import Picker from 'react-native-picker';
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
-class ScheduleScreen extends React.Component {
+class endDateScreen extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedStartDate: null,
+            selectedEndDate: null,
             dateSelected: false,
             timeSelected: false,
         };
@@ -40,7 +40,7 @@ class ScheduleScreen extends React.Component {
         }
         this.setState({
             dateSelected:true,
-            selectedStartDate: date,
+            selectedEndDate: date,
         });
     }
 
@@ -50,10 +50,10 @@ class ScheduleScreen extends React.Component {
 
     saveAndGo = async () => {
       try {
-        await AsyncStorage.setItem('starttime', JSON.stringify(this.state.selectedStartDate));
-        this.props.navigation.navigate('EndDate');
+        await AsyncStorage.setItem('endtime', JSON.stringify(this.state.selectedEndDate));
+        this.props.navigation.navigate('Second');
       } catch (e) {
-        console.log("Error while saving start time: ", e.message);
+        console.log("Error while saving end time: ", e.message);
       }
     }
 
@@ -77,7 +77,7 @@ class ScheduleScreen extends React.Component {
                 console.log('area', pickedValue);
                 var minute = parseInt(pickedValue[1]);
                 var hour = parseInt(pickedValue[0]);
-                this.onDateChange(this.state.selectedStartDate, hour, minute, pickedValue[2]);
+                this.onDateChange(this.state.selectedEndDate, hour, minute, pickedValue[2]);
             },
             onPickerCancel: pickedValue => {
                 console.log('area', pickedValue);
@@ -102,10 +102,10 @@ class ScheduleScreen extends React.Component {
 
 
     render() {
-      const { selectedStartDate } = this.state;
+      const { selectedEndDate } = this.state;
       const minDate = new Date();
       const maxDate = new Date(2050, 1, 1);
-      const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+      const endDate = selectedEndDate ? selectedEndDate.toString() : '';
       return (
           <View style={styles.container}>
               <View style={styles.navbar}>
@@ -125,30 +125,34 @@ class ScheduleScreen extends React.Component {
                   />
 
                   <View>
-                      {selectedStartDate !=null &&
-                        <Text style={styles.selected}>{moment(startDate).format('LLL')  }</Text>
+                      {selectedEndDate !=null &&
+                        <Text style={styles.selected}>{moment(endDate).format('LLL')  }</Text>
                       }
-                      {selectedStartDate ==null &&
-                      <Text style={styles.selected}> Select start date and time. </Text>
+                      {selectedEndDate ==null &&
+                      <Text style={styles.selected}> Select end date and time. </Text>
                       }
 
                   </View>
 
-
+                  <View>
                   <TouchableHighlight style={styles.button} onPress={this._showTimePicker.bind(this)} disabled={!this.state.dateSelected}>
-                      <Text style={styles.buttonText}>Edit start time</Text>
+                      <Text style={styles.buttonText}>Edit end time</Text>
                   </TouchableHighlight>
+                  </View>
 
+                  <View>
                   <TouchableHighlight onPress={() => this.saveAndGo()} style={styles.nextButton} disabled={!this.state.timeSelected}>
                       <Text style={styles.buttonText}>NEXT</Text>
                   </TouchableHighlight>
+                  </View>
 
 
               </View>
+
 
           </View>
       );
   }
 }
 
-export default ScheduleScreen ;
+export default endDateScreen;
