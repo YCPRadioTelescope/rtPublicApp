@@ -7,6 +7,7 @@ import {bindActionCreators} from "redux";
 import {feedback} from "../FeedbackScreen/FeedbackActions";
 import {connect} from "react-redux";
 import AsyncStorage from '@react-native-community/async-storage';
+import moment from 'moment';
 
 class PublicScreen extends React.Component {
   constructor(props) {
@@ -107,8 +108,8 @@ class PublicScreen extends React.Component {
                                     <View style = {styles.text}>
                                         <Text style = {styles.name}>{item.userFirstName}'s Appointment</Text>
                                         <Text style = {styles.type}>Type: {item.type} Status: {item.status}</Text>
-                                        <Text style = {styles.RightAscension}> Start Time: {item.startTime} </Text>
-                                        <Text style = {styles.Declination}> End Time: {item.endTime}</Text>
+                                        <Text style = {styles.RightAscension}> Start Time: {moment(item.startTime).format('LLL')} </Text>
+                                        <Text style = {styles.Declination}> End Time: {moment(item.endTime).format('LLL')}</Text>
                                         <Text style = {styles.RightAscension}> RightAscension: {item.rightAscension}</Text>
                                         <Text style = {styles.Declination}> Declination: {item.declination}</Text>
                                     </View>
