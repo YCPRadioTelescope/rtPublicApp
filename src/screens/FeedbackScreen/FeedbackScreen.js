@@ -15,29 +15,53 @@ class FeedbackScreen extends React.Component {
             name: "publicapptestname"
         };
     }
+    getStringItem = async (key) => {
+        let value = '';
+        try {
+           value = await AsyncStorage.getItem(key) || 'error';
+           return value;
+        } catch (e) {
+            console.log("Error while saving Item: ", key,", ERROR MESSAGE: ", e);
+        }
+    }
     sendFeedback = async () =>{
-        await this.props.feedback(this.state.name, this.state.feedbackText).then(response => {
-            /*
-            check if feedback is valid.
-            Database checks if null and if feedbackText is greater then 100 chars
-            but it wouldnt hurt to check here as well
-            */
-            if(!this.state.feedbackText){
-                alert("Error. Feedback cannot be null" )
-            }
-            else if(this.state.feedbackText.length>100){
-                alert("Error. Feedback must be 100 characters or less" )
-            }
-            else{
-                console.log('response'+ response);
-                if(response.type === "FEEDBACK_SUCCESS"){
-                    alert("Feedback Sent Successfully" )
-                }
-                else{
-                    alert("Error: Could Not Send Feedback. Error Code: "+ response.feed.statusCode+ " Reason: "+response.feed.statusReason)
-                }
-            }
-        })
+
+        try{
+            AsyncStorage.getItem('firstname').then((first) => {
+                AsyncStorage.getItem('lastname').then((last) =>{
+                    //join the first and last names together
+                    const fullname = JSON.parse(first) +" " + JSON.parse(last);
+                    console.log("The users fullname name is: "+ fullname);
+                    /*
+                       check if feedback is valid.
+                       Database checks if null and if feedbackText is greater then 100 chars
+                       but it wouldnt hurt to check here as well
+                       */
+
+                    if(!this.state.feedbackText){
+                        alert("Error. Feedback cannot be empty" )
+                    }
+                    else if(this.state.feedbackText.length>100){
+                        alert("Error. Feedback must be 100 characters or less" )
+                    }
+                    else {
+                        this.props.feedback(fullname, this.state.feedbackText).then(response => {
+                                console.log('response' + response);
+                                if (response.type === "FEEDBACK_SUCCESS") {
+                                    alert("Feedback Sent Successfully")
+                                } else {
+                                    alert("Error: Could Not Send Feedback. Error Code: " + response.feed.statusCode + " Reason: " + response.feed.statusReason)
+                                }
+
+                        })
+                    }
+                });
+            });
+        }catch(e){
+            console.log("ERROR getting first or last name from Async Storage in feedback Screen: ",e.message);
+        }
+        //let first = this.getStringItem('firstname');
+
 
     }
     render() {
