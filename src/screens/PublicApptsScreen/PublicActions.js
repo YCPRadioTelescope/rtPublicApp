@@ -25,7 +25,6 @@ export const publicAppts = (userId, page, size) => {
     let options = {
         'headers': {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqY29uc3RhbnRpbmVAeWNwLmVkdSIsImV4cCI6MTU4NTc1OTg0OX0.FiYqtZsk2QrWPWbDn6fAK66rTQe0RE3Vds22Z-Ex5smps2Vtu5HuIn8Xiu_7JxElNfsOTttldryoNe7RzpQLZg',
         },
     };
     return dispatch => {
@@ -33,7 +32,12 @@ export const publicAppts = (userId, page, size) => {
         /*
         Check front end API call. Header contains tocken. Gotta figure out how to put the tocken in there. 
         remember to set page and size to actual parameters
+        For some reason setting the content type using the below snippet doesnt work. it needs to be in the options object
          */
+        //axios.defaults.headers.common["Content-Type"] = "application/json";
+        AsyncStorage.getItem('jwt').then((value) => {
+            axios.defaults.headers.common["Authorization"] = value;
+        }).done();
         return axios
             .get(`${url}/api/users/${userId}/appointments/completedList?page=${page}&size=${size}`,options)
             .then(response => {

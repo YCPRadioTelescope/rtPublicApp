@@ -6,6 +6,7 @@ import {PUBLIC_SUCCESS, publicAppts} from "./PublicActions";
 import {bindActionCreators} from "redux";
 import {feedback} from "../FeedbackScreen/FeedbackActions";
 import {connect} from "react-redux";
+import AsyncStorage from '@react-native-community/async-storage';
 
 class PublicScreen extends React.Component {
   constructor(props) {
@@ -13,28 +14,44 @@ class PublicScreen extends React.Component {
       this.state = {
           showAppointments: 0,
           content: [],
-          userId: 2,
           page: 0,
           size: 10,
 
       };
+
   }
     async getData(){
+        console.log("Attempting to get a users public appointments")
+        try{
+            AsyncStorage.getItem('userid').then((userId) => {
+                console.log("Attempting to get the public appointment of user number: "+ userId)
+                this.props.publicAppts(userId,this.state.page,this.state.size).then(response => {
+                    //this.setState({isLoading: false});'
+                    let statusCode = response.publicAppointments.statusCode;
+                    console.log("Getting the User's public appointments response: "+ statusCode)
 
-        await this.props.publicAppts(this.state.userId,this.state.page,this.state.size).then(response => {
-            //this.setState({isLoading: false});'
-            let statusCode = response.publicAppointments.statusCode;
-            console.log("Getting the User's public appointments response: "+ statusCode)
+                    if(response.type == PUBLIC_SUCCESS){
+                        this.setState({content: response.publicAppointments.data.content})
+                        if(response.publicAppointments.data.content.length == 0){
+                            this.setState({showAppointments: 0});
 
-            if(response.type == PUBLIC_SUCCESS){
-                this.setState({content: response.publicAppointments.data.content})
-            }
-            else{
-                alert("Error: Could Not Get Public Appointments. Error Code: "+ response.feed.statusCode+ " Reason: "+response.feed.statusReason)
-            }
-            //console.log("Appointment content: "+this.state.content)
+                        }
+                        else{
+                            this.setState({showAppointments: 1});
+                        }
+                    }
+                    else{
+                        alert("Error: Could Not Get Public Appointments. Error Code: "+ response.feed.statusCode+ " Reason: "+response.feed.statusReason)
+                    }
+                    //console.log("Appointment content: "+this.state.content)
 
-        })
+                })
+
+            })
+        }catch(e){
+            console.log("ERROR getting userId in Public Appointments Screen: ",e.message)
+        }
+
     }
     componentDidMount() {
         this.focusListener = this.props.navigation.addListener("didFocus", () => {
@@ -65,11 +82,6 @@ class PublicScreen extends React.Component {
                         <Text style = {styles.name}>No Public Appointments </Text>
                         <Text style = {styles.type}>There are no completed public observations </Text>
                         <Text style = {styles.type}>Tap here to add an appointment </Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={this.showAppoints} style={styles.button}>
-                    <View>
-                        <Text style={styles.buttonText}> TEMP show appts </Text>
                     </View>
                 </TouchableHighlight>
             </View>

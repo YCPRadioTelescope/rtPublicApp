@@ -33,7 +33,7 @@ export const feedback = (name, comments) => {
         return axios
             .post(`${url}/api/feedback`,reqBody)
             .then(response => {
-                console.log(JSON.stringify(response));
+                //console.log(JSON.stringify(response));
                 return dispatch(feedbackSuccess(response.data));
             })
             .catch(error => {
