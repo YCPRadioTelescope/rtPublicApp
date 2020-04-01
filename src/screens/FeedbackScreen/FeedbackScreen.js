@@ -85,6 +85,7 @@ class FeedbackScreen extends React.Component {
                     onChangeText={feedbackText => this.setState({ feedbackText })}
                     style={styles.textInput}
                     multiline = {true}
+                    blurOnSubmit={true}
 
                 />
                 <TouchableHighlight onPress={this.sendFeedback} style={styles.button}>
