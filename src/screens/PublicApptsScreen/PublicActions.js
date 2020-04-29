@@ -39,7 +39,7 @@ export const publicAppts = (userId, page, size) => {
             axios.defaults.headers.common["Authorization"] = value;
         }).done();
         return axios
-            .get(`${url}/api/users/${userId}/appointments/completedList?page=${page}&size=${size}`,options)
+            .get(`${url}/api/appointments/publicCompleted?page=${page}&size=${size}`,options)
             .then(response => {
                 //console.log(JSON.stringify(response));
                 return dispatch(publicSuccess(response.data));

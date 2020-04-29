@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './styles';
 import ScrollElements from "../../components/scrollview/ScrollView";
 import AWS from 'aws-sdk';
+import { CheckBox } from 'react-native-elements';
 
 
 class NotificationSettingsScreen extends React.Component {
@@ -14,8 +15,6 @@ class NotificationSettingsScreen extends React.Component {
           publicAppointmentsSwitchOn: false,
       };
   }
-
-
 
 
 //  AWS.config.update({region: 'REGION'});

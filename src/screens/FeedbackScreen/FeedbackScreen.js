@@ -67,7 +67,7 @@ class FeedbackScreen extends React.Component {
     render() {
         console.log('Feedback', this.props.auth);
         return (
-            <View style={styles.container}>
+            <View style={styles.container} backgroundColor={'#041628'}>
                 <View style={styles.navbar}>
                     <Text style={styles.title}>Feedback</Text>
                     <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
@@ -84,8 +84,9 @@ class FeedbackScreen extends React.Component {
                     value={this.state.feedbackText}
                     onChangeText={feedbackText => this.setState({ feedbackText })}
                     style={styles.textInput}
-                    multiline = {true}
-
+                    blurOnSubmit={true}
+                    multiline={true}
+                    returnKeyType='done'
                 />
                 <TouchableHighlight onPress={this.sendFeedback} style={styles.button}>
                     <View>

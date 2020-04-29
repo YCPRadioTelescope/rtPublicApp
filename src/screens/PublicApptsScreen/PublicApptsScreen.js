@@ -106,7 +106,7 @@ class PublicScreen extends React.Component {
                             this.state.content.map((item, index) => (
                                 <View key = {item.id} style = {styles.item}>
                                     <View style = {styles.text}>
-                                        <Text style = {styles.name}>{item.userFirstName}'s Appointment</Text>
+                                        <Text style = {styles.name}>{item.userFirstName}s Appointment</Text>
                                         <Text style = {styles.type}>Type: {item.type} Status: {item.status}</Text>
                                         <Text style = {styles.RightAscension}> Start Time: {moment(item.startTime).format('LLL')} </Text>
                                         <Text style = {styles.Declination}> End Time: {moment(item.endTime).format('LLL')}</Text>

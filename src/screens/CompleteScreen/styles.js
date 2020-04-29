@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
     container: {
@@ -9,10 +9,10 @@ export default StyleSheet.create({
     },
     navbar: {
       width: '100%',
-      height: '13%',
+      height: Platform.OS === 'android' ? '13%' : '18%',
       backgroundColor: '#303030',
       position: 'absolute',
-      top: 0,
+      top: Platform.OS === 'android' ? 5 : 0,
       borderBottomWidth: 3,
       borderColor: '#041628',
       alignItems: 'center',
@@ -94,5 +94,12 @@ export default StyleSheet.create({
       position:'absolute',
       right:'5%',
     },
+    infoText:{
+      fontFamily:'Barton',
+      color:'#c8c9cb',
+      fontSize:15,
+      position:'relative',
+      top:300,
+    }
 });
 

@@ -9,10 +9,10 @@ export default StyleSheet.create({
     },
     navbar: {
       width: '100%',
-      height: '13%',
+      height: Platform.OS === 'android' ? '13%' : '18%',
       backgroundColor: '#303030',
       position: 'absolute',
-      top: 0,
+      top: Platform.OS === 'android' ? 5 : 0,
       borderBottomWidth: 3,
       borderColor: '#041628',
       alignItems: 'center',
