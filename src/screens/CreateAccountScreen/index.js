@@ -27,14 +27,14 @@ class CreateAccountScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: this.props.auth.firstName || "",
-      lastName: this.props.auth.lastName || "",
-      emailAddress: this.props.auth.emailAddress || "",
-      emailConfirm: this.props.auth.emailConfirm || "",
-      phoneNumber: this.props.auth.phoneNumber || "",
-      company: this.props.auth.company || "",
-      password: this.props.auth.password || "",
-      passwordConfirm: this.props.auth.passwordConfirm || "",
+      firstName: this.props.auth.firstName || '',
+      lastName: this.props.auth.lastName || '',
+      emailAddress: this.props.auth.emailAddress || '',
+      emailConfirm: this.props.auth.emailConfirm || '',
+      phoneNumber: this.props.auth.phoneNumber || '',
+      company: this.props.auth.company || '',
+      password: this.props.auth.password || '',
+      passwordConfirm: this.props.auth.passwordConfirm || '',
       categoryOfService: this.props.auth.categoryOfService || "GUEST",
       hidePassword: true,
     };
@@ -43,12 +43,10 @@ class CreateAccountScreen extends React.Component {
 
   signUp = async () => {
     await this.props.signup(this.state.firstName, this.state.lastName, this.state.emailAddress, this.state.emailConfirm, this.state.phoneNumber, this.state.password, this.state.passwordConfirm, this.state.company, this.state.categoryOfService).then(response => {
-      console.log('response', response);
       if(response.type === "SIGNUP_SUCCESS"){
         alert("Thank you for signing up with us. Once approved, follow the instructions sent to your email in order to sign in.")
         this.props.navigation.navigate("Login");
-      }
-      else{
+      }else{
         alert("Looks like the stars did not align correctly!  Please try to login again.")
       }
     })

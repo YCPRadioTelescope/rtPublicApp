@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 
 
-const url = "https://prod-api.ycpradiotelescope.com";
+const url = "http://api.ycpradiotelescope.com:8080";
 export const LOGIN = "LOGIN";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
@@ -77,11 +77,41 @@ getUserData = async (jwt) => {
           this.saveItem('email', JSON.stringify(response.data.data.email));
           this.saveItem('firstname', JSON.stringify(response.data.data.firstName));
           this.saveItem('lastname', JSON.stringify(response.data.data.lastName));
+          this.getUser(jwt, JSON.stringify(response.data.data.userId));
         })
         .catch(error => {
           console.log("ERROR WITH GET REQUEST: ", error);
         });
     } catch (e) {
       console.log("Error with getting user data: ", e);
+    }
+};
+
+getUser = async (jwt, userId) => {
+    // Make get request to return the user's information that is saved down using AsyncStorage
+    try {
+        // Set default header content to application/json
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+
+        // Set default header authorization to the token passed in parameter
+        axios.defaults.headers.common["Authorization"] = jwt;
+
+        axios
+        .get(`${url}/api/users/${userId}`)
+        .then(response => {
+          this.saveItem('company', JSON.stringify(response.data.data.company));
+          this.saveItem('phonenumber', JSON.stringify(response.data.data.phoneNumber));
+          AsyncStorage.getItem('notificationtype').then((value) => {
+            if(value != "EMAIL" && value != "SMS" && value != "ALL"){
+                this.saveItem('notificationtype', "EMAIL");
+            }
+          });
+
+        })
+        .catch(error => {
+          console.log("ERROR WITH GET USER REQUEST: ", error);
+        });
+    } catch (e) {
+      console.log("Error with getting user record data: ", e);
     }
 };

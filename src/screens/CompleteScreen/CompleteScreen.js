@@ -6,7 +6,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
-const url = "https://prod-api.ycpradiotelescope.com";
+const url = "http://api.ycpradiotelescope.com:8080";
 
 
 class CompleteScreen extends React.Component {
@@ -38,7 +38,7 @@ class CompleteScreen extends React.Component {
         axios.defaults.headers.common["Content-Type"] = "application/json";
         axios.defaults.headers.common["Authorization"] = jwt;
         return axios
-            .get(`${url}/api/users/${userId}/appointments/completeList?page=0&size=50`)
+            .get(`${url}/api/users/${userId}/appointments/completedList?page=0&size=50`)
             .then(response => {
                 this.setState({
                     isRefreshing: true,
@@ -108,10 +108,11 @@ class CompleteScreen extends React.Component {
                                      <View key = {item.id} style = {styles.item}>
                                          <View style = {styles.text}>
                                              <Text style = {styles.name}>{item.userFirstName}s Appointment</Text>
-                                             <Text style = {styles.type}>Type: {item.type}          Status: {item.status}</Text>
+                                             <Text style = {styles.type}>Type: {item.type}</Text>
+                                             <Text style = {styles.type}>Status: {item.status}</Text>
                                              <Text style = {styles.type}>Begins: {moment(item.startTime).format('LLL')  }</Text>
                                              <Text style = {styles.type}>Ends: {moment(item.endTime).format('LLL')  }</Text>
-                                             <Text style = {styles.RightAscension}> RightAscension: {item.rightAscension}         Declination: {item.declination}</Text>
+                                             <Text style = {styles.type}>RightAscension: {item.rightAscension}         Declination: {item.declination}</Text>
                                          </View>
                                      </View>
                                  ))

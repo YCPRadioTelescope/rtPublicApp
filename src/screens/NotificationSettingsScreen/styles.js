@@ -9,6 +9,7 @@ export default StyleSheet.create({
   subContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 5,
   },
   navbar: {
     width: '100%',
@@ -50,7 +51,7 @@ export default StyleSheet.create({
   },
   subText: {
     color: "#FFFFFF",
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: "600",
     textAlign: 'center',
     borderWidth: 1,

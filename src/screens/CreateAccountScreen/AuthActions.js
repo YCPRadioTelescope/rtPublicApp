@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AsyncStorage } from '@react-native-community/async-storage';
 
-const url = "https://prod-api.ycpradiotelescope.com/api/users";
+const url = "http://api.ycpradiotelescope.com:8080/api";
 export const SIGNUP = "SIGNUP";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
@@ -22,7 +22,7 @@ export const signupFailure = error => {
 
 export const signup = (firstName, lastName, email, emailConfirm, phoneNumber, password, passwordConfirm, company, categoryOfService) => {
   return dispatch => {
-    return axios.post(`${url}`,
+    return axios.post(`${url}/users`,
         {
             'firstName': firstName,
             'lastName': lastName,
@@ -42,7 +42,7 @@ export const signup = (firstName, lastName, email, emailConfirm, phoneNumber, pa
         return dispatch(signupSuccess(response.data));
       })
       .catch(error => {
-        console.log(error.response.data.message);
+        console.log(JSON.stringify(error.response.data));
         return dispatch(signupFailure(error.response.data));
       });
   };

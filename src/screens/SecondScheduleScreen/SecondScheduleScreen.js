@@ -10,7 +10,7 @@ import { SearchBar, CheckBox } from 'react-native-elements';
 import {bindActionCreators} from 'redux';
 import { connect } from "react-redux";
 
-const url = "https://prod-api.ycpradiotelescope.com";
+const url = "http://api.ycpradiotelescope.com:8080";
 
 class SecondScheduleScreen extends React.Component {
 
@@ -27,6 +27,8 @@ class SecondScheduleScreen extends React.Component {
             selectedAscensionMinutes: 0,
             selectedAscensionSeconds: 0,
             selectedDeclination: 0,
+            selectedAzimuth: 0,
+            selectedElevation: 0,
             startTime: '',
             endTime: '',
             userId: 0,
@@ -40,6 +42,7 @@ class SecondScheduleScreen extends React.Component {
         };
         this.scheduleAppointment = this.scheduleAppointment.bind(this);
         this._getCelestialData = this._getCelestialData.bind(this);
+        this._scheduleCelestial = this._scheduleCelestial.bind(this);
         AsyncStorage.getItem('starttime').then((value) => {
             this.state.startTime = JSON.parse(value);
         });
@@ -63,10 +66,10 @@ class SecondScheduleScreen extends React.Component {
             this.state.selectedTelescopeId = 3;
         }
 
-        this.props.schedulePointAppointment(this.state.userId, this.state.startTime, this.state.endTime, this.state.selectedTelescopeId, this.state.checked, this.state.selectedAscensionHours, this.state.selectedAscensionMinutes, this.state.selectedAscensionSeconds, this.state.selectedDeclination).then(response => {
+        this.props.schedulePointAppointment(this.state.userId, this.state.startTime, this.state.endTime, this.state.selectedTelescopeId, !this.state.checked, this.state.selectedAscensionHours, this.state.selectedAscensionMinutes, this.state.selectedAscensionSeconds, this.state.selectedDeclination).then(response => {
             if (response.type == "APPOINTMENT_SUCCESS"){
                 console.log("Appointment successfully scheduled: ", JSON.stringify(response));
-                alert("Successfully submitted appointment for review");
+                alert("Successfully submitted point appointment");
                 this.autoHome();
             } else {
                 alert("Looks like something went wrong. Please try again later.");
@@ -88,7 +91,7 @@ class SecondScheduleScreen extends React.Component {
             AsyncStorage.getItem('jwt').then((value) => {
                 AsyncStorage.getItem('userid').then((val) => {
                     var search = 'name';
-                    this._scheduleCelestial(value,val,this.state.query,search);
+                    this._scheduleCelestial(value,JSON.parse(val),this.state.query,search);
                 });
             });
         } catch(e) {
@@ -104,7 +107,7 @@ class SecondScheduleScreen extends React.Component {
           "startTime": this.state.startTime,
           "endTime": this.state.endTime,
           "telescopeId": this.state.selectedTelescopeId,
-          "isPublic": this.state.checked,
+          "isPublic": !this.state.checked,
           "priority": 'PRIMARY',
           "celestialBodyId": this.state.celestialBodyId
         };
@@ -121,7 +124,7 @@ class SecondScheduleScreen extends React.Component {
             });
     }
 
-    _getData(){
+    _beginCelestialProcess(){
         this.setState({
             celestialBodies: []
         });
@@ -129,7 +132,7 @@ class SecondScheduleScreen extends React.Component {
             AsyncStorage.getItem('jwt').then((value) => {
                 AsyncStorage.getItem('userid').then((val) => {
                     var search = 'name';
-                    this._getCelestialData(value,val,this.state.query,search);
+                    this._getCelestialData(value,JSON.parse(val),this.state.query,search);
                 });
             });
         } catch(e) {
@@ -137,6 +140,127 @@ class SecondScheduleScreen extends React.Component {
         }
         return
     };
+
+    _getCelestialData(jwt, userId, value, search) {
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Authorization"] = jwt;
+        return axios
+            .get(`${url}/api/celestial-bodies/search?page=0&size=25&value=${value}&search=${search}`)
+            .then(response => {
+                console.log('SEARCH RESULTS: ', JSON.stringify(response))
+                response.data.data.content.map(item => {
+                    this.state.celestialBodies.push({ value: item.name });
+                    this.state.celestialBodiesDetail.push({ value: item.name, id: item.id });
+                    this.setState({
+                        celestialBodyId: item.id
+                    });
+                })
+                if(JSON.parse(response.data.data.numberOfElements) == 0){
+                    this.buttonAlert(value);
+                }else{
+                    this.setState({
+                        celestialSearchSubmitted: true
+                    });
+                }
+            })
+            .catch(error => {
+                console.log('Error getting celestial data', error);
+            });
+    };
+
+    scheduleDriftAppointment(){
+        if (this.state.selectedTelescope == 'YCAS Telescope'){
+            this.state.selectedTelescopeId = 1;
+        } else if (this.state.selectedTelescope == 'Scale Model'){
+            this.state.selectedTelescopeId = 2;
+        } else if (this.state.selectedTelescope == 'Virtual'){
+            this.state.selectedTelescopeId = 3;
+        }
+
+        try {
+            AsyncStorage.getItem('jwt').then((value) => {
+                AsyncStorage.getItem('userid').then((val) => {
+                    var search = 'name';
+                    this._scheduleDrift(value,JSON.parse(val));
+                });
+            });
+        } catch(e) {
+            console.log("Error loading data: ", e.message);
+        }
+    }
+
+    _scheduleDrift(jwt, userID){
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Authorization"] = jwt;
+        let data = {
+          "userId": userID,
+          "startTime": this.state.startTime,
+          "endTime": this.state.endTime,
+          "telescopeId": this.state.selectedTelescopeId,
+          "isPublic": !this.state.checked,
+          "priority": 'PRIMARY',
+          "azimuth": this.state.selectedAzimuth,
+          "elevation": this.state.selectedElevation
+        };
+        return axios
+            .post(`${url}/api/appointments/schedule/drift-scan`, data)
+            .then(response => {
+                console.log("SUCCESSFULLY REQUESTED RESPONSE: ", JSON.stringify(response));
+                alert('Successfully created celestial appointment');
+                this.autoHome();
+            })
+            .catch(error => {
+                console.log("ERROR WITH REQUESTED APPOINTMENT", JSON.stringify(error.response));
+                alert('An error occurred, please try again later');
+            });
+    }
+
+    scheduleRasterScanAppointment(){
+        if (this.state.selectedTelescope == 'YCAS Telescope'){
+            this.state.selectedTelescopeId = 1;
+        } else if (this.state.selectedTelescope == 'Scale Model'){
+            this.state.selectedTelescopeId = 2;
+        } else if (this.state.selectedTelescope == 'Virtual'){
+            this.state.selectedTelescopeId = 3;
+        }
+
+        try {
+            AsyncStorage.getItem('jwt').then((value) => {
+                AsyncStorage.getItem('userid').then((val) => {
+                    var search = 'name';
+                    this._scheduleRasterScan(value,JSON.parse(val));
+                });
+            });
+        } catch(e) {
+            console.log("Error loading data: ", e.message);
+        }
+    }
+
+    _scheduleRasterScan(jwt, userID){
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Authorization"] = jwt;
+        let data = {
+          "userId": userID,
+          "startTime": this.state.startTime,
+          "endTime": this.state.endTime,
+          "telescopeId": this.state.selectedTelescopeId,
+          "isPublic": !this.state.checked,
+          "priority": 'PRIMARY',
+          "azimuth": this.state.selectedAzimuth,
+          "elevation": this.state.selectedElevation
+        };
+        return axios
+            .post(`${url}/api/appointments/schedule/raster-scan`, data)
+            .then(response => {
+                console.log("SUCCESSFULLY REQUESTED RESPONSE: ", JSON.stringify(response));
+                alert('Successfully created celestial appointment');
+                this.autoHome();
+            })
+            .catch(error => {
+                console.log("ERROR WITH REQUESTED APPOINTMENT", JSON.stringify(error.response));
+                alert('An error occurred, please try again later');
+            });
+    }
 
     buttonAlert(value){
         Alert.alert(
@@ -158,30 +282,6 @@ class SecondScheduleScreen extends React.Component {
             return [];
         }
         query = query.trim().toLowerCase();
-    };
-
-    _getCelestialData(jwt, userId, value, search) {
-        axios.defaults.headers.common["Content-Type"] = "application/json";
-        axios.defaults.headers.common["Authorization"] = jwt;
-        return axios
-            .get(`${url}/api/celestial-bodies/search?page=0&size=25&value=${value}&search=${search}`)
-            .then(response => {
-                console.log('SEARCH RESULTS: ', JSON.stringify(response))
-                response.data.data.content.map(item => {
-                    this.state.celestialBodies.push({ value: item.name });
-                    this.state.celestialBodiesDetail.push({ value: item.name, id: item.id });
-                })
-                if(JSON.parse(response.data.data.numberOfElements) == 0){
-                    this.buttonAlert(value);
-                }else{
-                    this.setState({
-                        celestialSearchSubmitted: true
-                    });
-                }
-            })
-            .catch(error => {
-                console.log('Error getting celestial data', error);
-            });
     };
 
     autoHome = () =>  {
@@ -245,7 +345,7 @@ class SecondScheduleScreen extends React.Component {
                                value={this.state.query}
                                containerStyle={styles.searchBar}
                             />
-                            <TouchableHighlight onPress={() => this._getData()} style={styles.submitButton}>
+                            <TouchableHighlight onPress={() => this._beginCelestialProcess()} style={styles.submitButton}>
                               <Text style={styles.buttonText}>SEARCH</Text>
                             </TouchableHighlight>
                         </View>
@@ -269,6 +369,28 @@ class SecondScheduleScreen extends React.Component {
                           />
                         </View>
                     )}
+                    {(this.state.selectedAppointmentType == 'Drift Scan' || this.state.selectedAppointmentType == 'Raster Scan') &&
+                    <View style={styles.numberInput}>
+                        <TextInput
+                              placeholder='Azimuth (Choose between 0 to 360)'
+                              onChangeText={(value) => {this.setState({selectedAzimuth: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={false}
+                              returnKeyType='done'
+                        />
+                    </View>}
+                    {(this.state.selectedAppointmentType == 'Drift Scan' || this.state.selectedAppointmentType == 'Raster Scan') &&
+                    <View style={styles.numberInput}>
+                        <TextInput
+                              placeholder='Elevation (Choose between 0 to 90)'
+                              onChangeText={(value) => {this.setState({selectedElevation: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={false}
+                              returnKeyType='done'
+                        />
+                    </View>}
                     {this.state.selectedAppointmentType == 'Point' &&
                     <View style={styles.numberInput}>
                         <TextInput
@@ -332,6 +454,16 @@ class SecondScheduleScreen extends React.Component {
                       }
                       {(this.state.selectedAppointmentType == 'Celestial Body') &&
                       <TouchableHighlight onPress={() => this.scheduleCelestialAppointment()} style={styles.submitButton}>
+                          <Text style={styles.buttonText}>SUBMIT</Text>
+                      </TouchableHighlight>
+                      }
+                      {(this.state.selectedAppointmentType == 'Drift Scan') &&
+                      <TouchableHighlight onPress={() => this.scheduleDriftAppointment()} style={styles.submitButton}>
+                          <Text style={styles.buttonText}>SUBMIT</Text>
+                      </TouchableHighlight>
+                      }
+                      {(this.state.selectedAppointmentType == 'Raster Scan') &&
+                      <TouchableHighlight onPress={() => this.scheduleRasterScanAppointment()} style={styles.submitButton}>
                           <Text style={styles.buttonText}>SUBMIT</Text>
                       </TouchableHighlight>
                       }

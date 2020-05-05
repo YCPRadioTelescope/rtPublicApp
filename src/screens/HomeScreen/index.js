@@ -15,7 +15,6 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate('Login');
   };
   feedback = () => {
-    console.log('feedback');
     this.props.navigation.navigate('Feedback');
   };
   notifications = () => {

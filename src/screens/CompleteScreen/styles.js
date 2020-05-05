@@ -34,7 +34,7 @@ export default StyleSheet.create({
     },
     scroll: {
       position: 'relative',
-      top: '15%',
+      top: '20%',
       alignItems: 'stretch',
       alignSelf: 'center',
       width: '100%',

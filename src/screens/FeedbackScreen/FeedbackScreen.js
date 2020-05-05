@@ -69,7 +69,6 @@ class FeedbackScreen extends React.Component {
         return (
             <View style={styles.container} backgroundColor={'#041628'}>
                 <View style={styles.navbar}>
-                    <Text style={styles.title}>Feedback</Text>
                     <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
                         <Image
                             source={require("../../assets/images/backWhite.png")}
@@ -78,7 +77,6 @@ class FeedbackScreen extends React.Component {
                 </View>
                 <TextInput
                     placeholder="Enter Your Feedback Here"
-                    //secureTextEntry={this.state.showPassword}
                     autoCapitalize="none"
                     placeholderTextColor="white"
                     value={this.state.feedbackText}

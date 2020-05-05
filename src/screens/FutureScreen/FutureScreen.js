@@ -6,7 +6,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
-const url = "https://prod-api.ycpradiotelescope.com";
+const url = "http://api.ycpradiotelescope.com:8080";
 
 
 class FutureScreen extends React.Component {
@@ -40,6 +40,7 @@ class FutureScreen extends React.Component {
         return axios
             .get(`${url}/api/users/${userId}/appointments/futureList?page=0&size=50`)
             .then(response => {
+                console.log("FUTURE APPTS: ", JSON.stringify(response))
                 this.setState({
                     isRefreshing: true,
                     appointments: response.data.data.content
@@ -110,10 +111,11 @@ class FutureScreen extends React.Component {
                                      <View key = {item.id} style = {styles.item}>
                                          <View style = {styles.text}>
                                              <Text style = {styles.name}>{item.userFirstName}s Appointment</Text>
-                                             <Text style = {styles.type}>Type: {item.type}          Status: {item.status}</Text>
+                                             <Text style = {styles.type}>Type: {item.type}</Text>
+                                             <Text style = {styles.type}>Status: {item.status}</Text>
                                              <Text style = {styles.type}>Begins: {moment(item.startTime).format('LLL')  }</Text>
                                              <Text style = {styles.type}>Ends: {moment(item.endTime).format('LLL')  }</Text>
-                                             <Text style = {styles.RightAscension}> RightAscension: {item.rightAscension}         Declination: {item.declination}</Text>
+                                             <Text style = {styles.type}>RightAscension: {item.rightAscension}         Declination: {item.declination}</Text>
                                          </View>
                                      </View>
                                  ))

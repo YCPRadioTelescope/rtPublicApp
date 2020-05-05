@@ -57,7 +57,6 @@ class ScheduleScreen extends React.Component {
       }
     }
 
-
     _showTimePicker() {
         let hours = [],
             minutes = [];

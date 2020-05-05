@@ -10,7 +10,6 @@ import Galaxy from '../../components/galaxy/Galaxy.js';
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
-const url = "https://prod-api.ycpradiotelescope.com";
 
 class LoginScreen extends React.Component {
 
@@ -89,13 +88,6 @@ class LoginScreen extends React.Component {
     );
   }
 }
-
-
-//  <TouchableHighlight onPress={this.autoHome} style={styles.button}>
-//    <View>
-//      <Text style={styles.buttonText}> TEMP Home Button </Text>
-//    </View>
-//  </TouchableHighlight>
 
 const mapStateToProps = state => {
   const { user } = state;

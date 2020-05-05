@@ -7,7 +7,7 @@ import moment from 'moment';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 
-const url = "https://prod-api.ycpradiotelescope.com";
+const url = "http://api.ycpradiotelescope.com:8080";
 
 class SearchScreen extends React.Component {
 
@@ -128,10 +128,11 @@ class SearchScreen extends React.Component {
                          <View key = {item.id} style = {styles.item}>
                              <View style = {styles.text}>
                                  <Text style = {styles.name}>{item.userFirstName}s Appointment</Text>
-                                 <Text style = {styles.type}>Type: {item.type}          Status: {item.status}</Text>
+                                 <Text style = {styles.type}>Type: {item.type}</Text>
+                                 <Text style = {styles.type}>Status: {item.status}</Text>
                                  <Text style = {styles.type}>Begins: {moment(item.startTime).format('LLL')  }</Text>
                                  <Text style = {styles.type}>Ends: {moment(item.endTime).format('LLL')  }</Text>
-                                 <Text style = {styles.RightAscension}> RightAscension: {item.rightAscension}         Declination: {item.declination}</Text>
+                                 <Text style = {styles.type}>RightAscension: {item.rightAscension}         Declination: {item.declination}</Text>
                              </View>
                          </View>
                      ))
