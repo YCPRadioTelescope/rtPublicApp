@@ -15,7 +15,6 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate('Login');
   };
   feedback = () => {
-    console.log('feedback');
     this.props.navigation.navigate('Feedback');
   };
   notifications = () => {
@@ -23,7 +22,6 @@ class HomeScreen extends React.Component {
   };
 
   render() {
-    console.log('user:', AsyncStorage.getItem('user'));
     return (
         <LinearGradient colors={['#041628', '#1D364D' , '#1D364D']} style={styles.gradient }>
 

@@ -10,7 +10,6 @@ import Galaxy from '../../components/galaxy/Galaxy.js';
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
-const url = "https://prod-api.ycpradiotelescope.com";
 
 class LoginScreen extends React.Component {
 
@@ -45,7 +44,7 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-        <View>
+      <View>
         <Galaxy style={{ width:'100%', height: '100%'}} />
         <View style={styles.navbar}>
           <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
@@ -79,21 +78,13 @@ class LoginScreen extends React.Component {
               <Text style={styles.buttonText}> LOGIN </Text>
             </View>
           </TouchableHighlight>
-
-          <TouchableHighlight onPress={this.autoHome} style={styles.button}>
-            <View>
-              <Text style={styles.buttonText}> TEMP Home Button </Text>
-            </View>
-          </TouchableHighlight>
-
           <TouchableHighlight onPress={this.autoCreate} style={styles.button}>
             <View>
               <Text style={styles.buttonText}> New Account </Text>
             </View>
           </TouchableHighlight>
         </View>
-        </View>
-
+      </View>
     );
   }
 }

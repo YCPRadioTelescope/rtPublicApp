@@ -18,7 +18,6 @@ const INITIAL_STATE = {
 
 };
 const publicReducer = (state = INITIAL_STATE, action) => {
-    console.log("ACTION Public Appointments", action);
     switch (action.type) {
         // Don't think this gets called
         case PUBLIC:

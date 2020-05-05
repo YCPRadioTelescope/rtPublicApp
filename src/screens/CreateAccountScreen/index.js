@@ -27,14 +27,14 @@ class CreateAccountScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: this.props.auth.firstName || "",
-      lastName: this.props.auth.lastName || "",
-      emailAddress: this.props.auth.emailAddress || "",
-      emailConfirm: this.props.auth.emailConfirm || "",
-      phoneNumber: this.props.auth.phoneNumber || "",
-      company: this.props.auth.company || "",
-      password: this.props.auth.password || "",
-      passwordConfirm: this.props.auth.passwordConfirm || "",
+      firstName: this.props.auth.firstName || '',
+      lastName: this.props.auth.lastName || '',
+      emailAddress: this.props.auth.emailAddress || '',
+      emailConfirm: this.props.auth.emailConfirm || '',
+      phoneNumber: this.props.auth.phoneNumber || '',
+      company: this.props.auth.company || '',
+      password: this.props.auth.password || '',
+      passwordConfirm: this.props.auth.passwordConfirm || '',
       categoryOfService: this.props.auth.categoryOfService || "GUEST",
       hidePassword: true,
     };
@@ -43,12 +43,10 @@ class CreateAccountScreen extends React.Component {
 
   signUp = async () => {
     await this.props.signup(this.state.firstName, this.state.lastName, this.state.emailAddress, this.state.emailConfirm, this.state.phoneNumber, this.state.password, this.state.passwordConfirm, this.state.company, this.state.categoryOfService).then(response => {
-      console.log('response', response);
       if(response.type === "SIGNUP_SUCCESS"){
         alert("Thank you for signing up with us. Once approved, follow the instructions sent to your email in order to sign in.")
         this.props.navigation.navigate("Login");
-      }
-      else{
+      }else{
         alert("Looks like the stars did not align correctly!  Please try to login again.")
       }
     })
@@ -73,19 +71,19 @@ class CreateAccountScreen extends React.Component {
           <View style={{marginTop:'20%'}}>
           <TextInput
             placeholder="First Name"
-            autoCapitalize="none"
             placeholderTextColor="white"
             value={this.state.firstName}
             onChangeText={firstName => this.setState({ firstName })}
             style={styles.textInput}
+            returnKeyType={"next"}
           />
           <TextInput
             placeholder="Last Name"
-            autoCapitalize="none"
             placeholderTextColor="white"
             value={this.state.lastName}
             onChangeText={lastName => this.setState({ lastName })}
             style={styles.textInput}
+            returnKeyType={"next"}
           />
           <TextInput
             placeholder="Email Address"
@@ -94,6 +92,7 @@ class CreateAccountScreen extends React.Component {
             value={this.state.emailAddress}
             onChangeText={emailAddress => this.setState({ emailAddress })}
             style={styles.textInput}
+            returnKeyType={"next"}
           />
           <TextInput
             placeholder="Re-Type Email Address"
@@ -102,6 +101,7 @@ class CreateAccountScreen extends React.Component {
             value={this.state.emailConfirm}
             onChangeText={emailConfirm => this.setState({ emailConfirm })}
             style={styles.textInput}
+            returnKeyType={"next"}
           />
           <TextInput
             placeholder="Password"
@@ -111,6 +111,7 @@ class CreateAccountScreen extends React.Component {
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
             style={styles.textInput}
+            returnKeyType={"next"}
           />
           <TextInput
             placeholder="Re-Type Password"
@@ -120,6 +121,7 @@ class CreateAccountScreen extends React.Component {
             value={this.state.passwordConfirm}
             onChangeText={passwordConfirm => this.setState({ passwordConfirm })}
             style={styles.textInput}
+            returnKeyType={"next"}
           />
           <TextInput
             placeholder="Company Affiliation (Optional)"
@@ -128,6 +130,7 @@ class CreateAccountScreen extends React.Component {
             value={this.state.company}
             onChangeText={company => this.setState({ company })}
             style={styles.textInput}
+            returnKeyType={"next"}
           />
           <TextInput
             placeholder="Phone Number"
@@ -136,6 +139,7 @@ class CreateAccountScreen extends React.Component {
             value={this.state.phoneNumber}
             onChangeText={phoneNumber => this.setState({ phoneNumber })}
             style={styles.textInput}
+            returnKeyType='done'
           />
           </View>
           <TouchableHighlight onPress={this.signUp} style={styles.button}>

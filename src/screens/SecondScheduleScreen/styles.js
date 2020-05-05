@@ -8,10 +8,10 @@ export default StyleSheet.create({
   },
   navbar: {
     width: '100%',
-    height: '13%',
+    height: Platform.OS === 'android' ? '13%' : '18%',
     backgroundColor: '#303030',
     position: 'absolute',
-    top: 0,
+    top: Platform.OS === 'android' ? 5 : 0,
     borderBottomWidth: 3,
     borderColor: '#041628',
     alignItems: 'center',
@@ -37,19 +37,38 @@ export default StyleSheet.create({
   },
   contents:{
     position:'relative',
-    left: '3%',
+    alignItems: 'center',
     justifyContent: 'center',
-    width:'100%',
+    width:'90%',
   },
   dropdown:{
     width:'93%',
   },
+  numberInput:{
+    width:'93%',
+    marginTop: '2%',
+    marginBottom: '2%',
+    justifyContent: 'center',
+    borderRadius: 6,
+    paddingVertical: 8,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
   private:{
     flexDirection:'row',
     alignItems: 'center',
+    marginTop: 30,
   },
   privateText:{
     fontSize: 18,
+    color: '#FFFFFF',
+  },
+  searchBar:{
+    width:'100%',
+    position: 'absolute',
+    top: 5,
   },
   submitButton:{
     backgroundColor: 'rgba(129,122,223,1)',

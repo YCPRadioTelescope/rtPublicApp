@@ -1,12 +1,16 @@
-import {Image, Text, TextInput, TouchableHighlight, View} from 'react-native';
+import {Alert, Image, Text, TextInput, TouchableHighlight, View, Switch} from 'react-native';
 import React from 'react';
 import styles from './styles';
 import { Dropdown } from 'react-native-material-dropdown';
-import { Checkbox } from 'react-native-paper';
 import {schedulePointAppointment} from './schedulingAction';
+import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
+import moment from 'moment';
+import { SearchBar, CheckBox } from 'react-native-elements';
 import {bindActionCreators} from 'redux';
 import { connect } from "react-redux";
+
+const url = "http://api.ycpradiotelescope.com:8080";
 
 class SecondScheduleScreen extends React.Component {
 
@@ -14,6 +18,8 @@ class SecondScheduleScreen extends React.Component {
         super(props);
         this.state = {
             checked: false,
+            hideSubmit: true,
+            celestialSearchSubmitted: false,
             selectedTelescope: null,
             selectedTelescopeId: 0,
             selectedAppointmentType: null,
@@ -21,11 +27,22 @@ class SecondScheduleScreen extends React.Component {
             selectedAscensionMinutes: 0,
             selectedAscensionSeconds: 0,
             selectedDeclination: 0,
+            selectedAzimuth: 0,
+            selectedElevation: 0,
             startTime: '',
             endTime: '',
             userId: 0,
+            results: [],
+            celestialBodies: [],
+            celestialBodiesDetail: [],
+            query: '',
+            selectedBody: '',
+            selectedBodyID: 0,
+            showCelestials: false,
         };
         this.scheduleAppointment = this.scheduleAppointment.bind(this);
+        this._getCelestialData = this._getCelestialData.bind(this);
+        this._scheduleCelestial = this._scheduleCelestial.bind(this);
         AsyncStorage.getItem('starttime').then((value) => {
             this.state.startTime = JSON.parse(value);
         });
@@ -41,7 +58,7 @@ class SecondScheduleScreen extends React.Component {
 
     scheduleAppointment () {
 
-        if (this.state.selectedTelescope == 'John C. Rudy County Park'){
+        if (this.state.selectedTelescope == 'YCAS Telescope'){
             this.state.selectedTelescopeId = 1;
         } else if (this.state.selectedTelescope == 'Scale Model'){
             this.state.selectedTelescopeId = 2;
@@ -52,24 +69,230 @@ class SecondScheduleScreen extends React.Component {
         this.props.schedulePointAppointment(this.state.userId, this.state.startTime, this.state.endTime, this.state.selectedTelescopeId, !this.state.checked, this.state.selectedAscensionHours, this.state.selectedAscensionMinutes, this.state.selectedAscensionSeconds, this.state.selectedDeclination).then(response => {
             if (response.type == "APPOINTMENT_SUCCESS"){
                 console.log("Appointment successfully scheduled: ", JSON.stringify(response));
-                alert("Successfully submitted appointment for review");
+                alert("Successfully submitted point appointment");
                 this.autoHome();
             } else {
                 alert("Looks like something went wrong. Please try again later.");
             }
         });
-
     }
+
+
+    scheduleCelestialAppointment(){
+        if (this.state.selectedTelescope == 'YCAS Telescope'){
+            this.state.selectedTelescopeId = 1;
+        } else if (this.state.selectedTelescope == 'Scale Model'){
+            this.state.selectedTelescopeId = 2;
+        } else if (this.state.selectedTelescope == 'Virtual'){
+            this.state.selectedTelescopeId = 3;
+        }
+
+        try {
+            AsyncStorage.getItem('jwt').then((value) => {
+                AsyncStorage.getItem('userid').then((val) => {
+                    var search = 'name';
+                    this._scheduleCelestial(value,JSON.parse(val),this.state.query,search);
+                });
+            });
+        } catch(e) {
+            console.log("Error loading data: ", e.message);
+        }
+    }
+
+    _scheduleCelestial(jwt, userID){
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Authorization"] = jwt;
+        let data = {
+          "userId": userID,
+          "startTime": this.state.startTime,
+          "endTime": this.state.endTime,
+          "telescopeId": this.state.selectedTelescopeId,
+          "isPublic": !this.state.checked,
+          "priority": 'PRIMARY',
+          "celestialBodyId": this.state.celestialBodyId
+        };
+        return axios
+            .post(`${url}/api/appointments/schedule/celestial-body`, data)
+            .then(response => {
+                console.log("SUCCESSFULLY REQUESTED RESPONSE: ", JSON.stringify(response));
+                alert('Successfully created celestial appointment');
+                this.autoHome();
+            })
+            .catch(error => {
+                console.log("ERROR WITH REQUESTED APPOINTMENT", JSON.stringify(error.response));
+                alert('An error occurred, please try again later');
+            });
+    }
+
+    _beginCelestialProcess(){
+        this.setState({
+            celestialBodies: []
+        });
+        try {
+            AsyncStorage.getItem('jwt').then((value) => {
+                AsyncStorage.getItem('userid').then((val) => {
+                    var search = 'name';
+                    this._getCelestialData(value,JSON.parse(val),this.state.query,search);
+                });
+            });
+        } catch(e) {
+            console.log("Error loading data: ", e.message);
+        }
+        return
+    };
+
+    _getCelestialData(jwt, userId, value, search) {
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Authorization"] = jwt;
+        return axios
+            .get(`${url}/api/celestial-bodies/search?page=0&size=25&value=${value}&search=${search}`)
+            .then(response => {
+                console.log('SEARCH RESULTS: ', JSON.stringify(response))
+                response.data.data.content.map(item => {
+                    this.state.celestialBodies.push({ value: item.name });
+                    this.state.celestialBodiesDetail.push({ value: item.name, id: item.id });
+                    this.setState({
+                        celestialBodyId: item.id
+                    });
+                })
+                if(JSON.parse(response.data.data.numberOfElements) == 0){
+                    this.buttonAlert(value);
+                }else{
+                    this.setState({
+                        celestialSearchSubmitted: true
+                    });
+                }
+            })
+            .catch(error => {
+                console.log('Error getting celestial data', error);
+            });
+    };
+
+    scheduleDriftAppointment(){
+        if (this.state.selectedTelescope == 'YCAS Telescope'){
+            this.state.selectedTelescopeId = 1;
+        } else if (this.state.selectedTelescope == 'Scale Model'){
+            this.state.selectedTelescopeId = 2;
+        } else if (this.state.selectedTelescope == 'Virtual'){
+            this.state.selectedTelescopeId = 3;
+        }
+
+        try {
+            AsyncStorage.getItem('jwt').then((value) => {
+                AsyncStorage.getItem('userid').then((val) => {
+                    var search = 'name';
+                    this._scheduleDrift(value,JSON.parse(val));
+                });
+            });
+        } catch(e) {
+            console.log("Error loading data: ", e.message);
+        }
+    }
+
+    _scheduleDrift(jwt, userID){
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Authorization"] = jwt;
+        let data = {
+          "userId": userID,
+          "startTime": this.state.startTime,
+          "endTime": this.state.endTime,
+          "telescopeId": this.state.selectedTelescopeId,
+          "isPublic": !this.state.checked,
+          "priority": 'PRIMARY',
+          "azimuth": this.state.selectedAzimuth,
+          "elevation": this.state.selectedElevation
+        };
+        return axios
+            .post(`${url}/api/appointments/schedule/drift-scan`, data)
+            .then(response => {
+                console.log("SUCCESSFULLY REQUESTED RESPONSE: ", JSON.stringify(response));
+                alert('Successfully created celestial appointment');
+                this.autoHome();
+            })
+            .catch(error => {
+                console.log("ERROR WITH REQUESTED APPOINTMENT", JSON.stringify(error.response));
+                alert('An error occurred, please try again later');
+            });
+    }
+
+    scheduleRasterScanAppointment(){
+        if (this.state.selectedTelescope == 'YCAS Telescope'){
+            this.state.selectedTelescopeId = 1;
+        } else if (this.state.selectedTelescope == 'Scale Model'){
+            this.state.selectedTelescopeId = 2;
+        } else if (this.state.selectedTelescope == 'Virtual'){
+            this.state.selectedTelescopeId = 3;
+        }
+
+        try {
+            AsyncStorage.getItem('jwt').then((value) => {
+                AsyncStorage.getItem('userid').then((val) => {
+                    var search = 'name';
+                    this._scheduleRasterScan(value,JSON.parse(val));
+                });
+            });
+        } catch(e) {
+            console.log("Error loading data: ", e.message);
+        }
+    }
+
+    _scheduleRasterScan(jwt, userID){
+        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Authorization"] = jwt;
+        let data = {
+          "userId": userID,
+          "startTime": this.state.startTime,
+          "endTime": this.state.endTime,
+          "telescopeId": this.state.selectedTelescopeId,
+          "isPublic": !this.state.checked,
+          "priority": 'PRIMARY',
+          "azimuth": this.state.selectedAzimuth,
+          "elevation": this.state.selectedElevation
+        };
+        return axios
+            .post(`${url}/api/appointments/schedule/raster-scan`, data)
+            .then(response => {
+                console.log("SUCCESSFULLY REQUESTED RESPONSE: ", JSON.stringify(response));
+                alert('Successfully created celestial appointment');
+                this.autoHome();
+            })
+            .catch(error => {
+                console.log("ERROR WITH REQUESTED APPOINTMENT", JSON.stringify(error.response));
+                alert('An error occurred, please try again later');
+            });
+    }
+
+    buttonAlert(value){
+        Alert.alert(
+          "Sorry",
+          "But there were 0 results from searching: '"+ this.state.query +"'",
+          [
+            {
+              text: "Try Again"
+            },
+          ],
+          { cancelable: false }
+        );
+    };
+
+    updateSearch = query => {
+        this.setState({ query });
+        const appointments = this.state.appointments;
+        if (query === '') {
+            return [];
+        }
+        query = query.trim().toLowerCase();
+    };
 
     autoHome = () =>  {
         this.props.navigation.navigate("Home");
     }
 
     render() {
-        const { checked } = this.state;
+        const { checked, selectedAppointmentType } = this.state;
 
         let telescopeData = [{
-            value: 'John C. Rudy County Park',
+            value: 'YCAS Telescope',
         }, {
             value: 'Scale Model',
         }, {
@@ -86,544 +309,8 @@ class SecondScheduleScreen extends React.Component {
             value: 'Raster Scan',
         }];
 
-        let possibleHours = [{
-            value: 0,
-        },{
-            value: 1,
-        },{
-            value: 2,
-        },{
-            value: 3,
-        },{
-            value: 4,
-        },{
-            value: 5,
-        },{
-            value: 6,
-        },{
-            value: 7,
-        },{
-            value: 8,
-        },{
-            value: 9,
-        },{
-            value: 10,
-        },{
-            value: 11,
-        },{
-            value: 12,
-        },{
-            value: 13,
-        },{
-            value: 14,
-        },{
-            value: 15,
-        },{
-            value: 16,
-        },{
-            value: 17,
-        },{
-            value: 18,
-        },{
-            value: 19,
-        },{
-            value: 20,
-        },{
-            value: 21,
-        },{
-            value: 22,
-        },{
-            value: 23,
-        }];
-
-        let possibleMinutesOrSeconds = [{
-            value: 0,
-        },{
-            value: 1,
-        },{
-            value: 2,
-        },{
-            value: 3,
-        },{
-            value: 4,
-        },{
-            value: 5,
-        },{
-            value: 6,
-        },{
-            value: 7,
-        },{
-            value: 8,
-        },{
-            value: 9,
-        },{
-            value: 10,
-        },{
-            value: 11,
-        },{
-            value: 12,
-        },{
-            value: 13,
-        },{
-            value: 14,
-        },{
-            value: 15,
-        },{
-            value: 16,
-        },{
-            value: 17,
-        },{
-            value: 18,
-        },{
-            value: 19,
-        },{
-            value: 20,
-        },{
-            value: 21,
-        },{
-            value: 22,
-        },{
-            value: 23,
-        },{
-            value: 24,
-        },{
-            value: 25,
-        },{
-            value: 26,
-        },{
-            value: 27,
-        },{
-            value: 28,
-        },{
-            value: 29,
-        },{
-            value: 30,
-        },{
-            value: 31,
-        },{
-            value: 32,
-        },{
-            value: 33,
-        },{
-            value: 34,
-        },{
-            value: 35,
-        },{
-            value: 36,
-        },{
-            value: 37,
-        },{
-            value: 38,
-        },{
-            value: 39,
-        },{
-            value: 40,
-        },{
-            value: 41,
-        },{
-            value: 42,
-        },{
-            value: 43,
-        },{
-            value: 44,
-        },{
-            value: 45,
-        },{
-            value: 46,
-        },{
-            value: 47,
-        },{
-            value: 48,
-        },{
-            value: 49,
-        },{
-            value: 50,
-        },{
-            value: 51,
-        },{
-            value: 52,
-        },{
-            value: 53,
-        },{
-            value: 54,
-        },{
-            value: 55,
-        },{
-            value: 56,
-        },{
-            value: 57,
-        },{
-            value: 58,
-        },{
-            value: 59,
-        }];
-
-        let declinationData = [{
-            value: 90,
-        },{
-            value: 89,
-        },{
-            value: 88,
-        },{
-            value: 87,
-        },{
-            value: 86,
-        },{
-            value: 85,
-        },{
-            value: 84,
-        },{
-            value: 83,
-        },{
-            value: 82,
-        },{
-            value: 81,
-        },{
-            value: 80,
-        },{
-            value: 79,
-        },{
-            value: 78,
-        },{
-            value: 77,
-        },{
-            value: 76,
-        },{
-            value: 75,
-        },{
-            value: 74,
-        },{
-            value: 73,
-        },{
-            value: 72,
-        },{
-            value: 71,
-        },{
-            value: 70,
-        },{
-            value: 69,
-        },{
-            value: 68,
-        },{
-            value: 67,
-        },{
-            value: 66,
-        },{
-            value: 65,
-        },{
-            value: 64,
-        },{
-            value: 63,
-        },{
-            value: 62,
-        },{
-            value: 61,
-        },{
-            value: 60,
-        },{
-            value: 59,
-        },{
-            value: 58,
-        },{
-            value: 57,
-        },{
-            value: 56,
-        },{
-            value: 55,
-        },{
-            value: 54,
-        },{
-            value: 53,
-        },{
-            value: 52,
-        },{
-            value: 51,
-        },{
-            value: 50,
-        },{
-            value: 49,
-        },{
-            value: 48,
-        },{
-            value: 47,
-        },{
-            value: 46,
-        },{
-            value: 45,
-        },{
-            value: 44,
-        },{
-            value: 43,
-        },{
-            value: 42,
-        },{
-            value: 41,
-        },{
-            value: 40,
-        },{
-            value: 39,
-        },{
-            value: 38,
-        },{
-            value: 37,
-        },{
-            value: 36,
-        },{
-            value: 35,
-        },{
-            value: 34,
-        },{
-            value: 33,
-        },{
-            value: 32,
-        },{
-            value: 31,
-        },{
-            value: 30,
-        },{
-            value: 29,
-        },{
-            value: 28,
-        },{
-            value: 27,
-        },{
-            value: 26,
-        },{
-            value: 25,
-        },{
-            value: 24,
-        },{
-            value: 23,
-        },{
-            value: 22,
-        },{
-            value: 21,
-        },{
-            value: 20,
-        },{
-            value: 19,
-        },{
-            value: 18,
-        },{
-            value: 17,
-        },{
-            value: 16,
-        },{
-            value: 15,
-        },{
-            value: 14,
-        },{
-            value: 13,
-        },{
-            value: 12,
-        },{
-            value: 11,
-        },{
-            value: 10,
-        },{
-            value: 9,
-        },{
-            value: 8,
-        },{
-            value: 7,
-        },{
-            value: 6,
-        },{
-            value: 5,
-        },{
-            value: 4,
-        },{
-            value: 3,
-        },{
-            value: 2,
-        },{
-            value: 1,
-        },{
-            value: 0,
-        },{
-            value: -1,
-        },{
-            value: -2,
-        },{
-            value: -3,
-        },{
-            value: -4,
-        },{
-            value: -5,
-        },{
-            value: -6,
-        },{
-            value: -7,
-        },{
-            value: -8,
-        },{
-            value: -9,
-        },{
-            value: -10,
-        },{
-            value: -11,
-        },{
-            value: -12,
-        },{
-            value: -13,
-        },{
-            value: -14,
-        },{
-            value: -15,
-        },{
-            value: -16,
-        },{
-            value: -17,
-        },{
-            value: -18,
-        },{
-            value: -19,
-        },{
-            value: -20,
-        },{
-            value: -21,
-        },{
-            value: -22,
-        },{
-            value: -23,
-        },{
-            value: -24,
-        },{
-            value: -25,
-        },{
-            value: -26,
-        },{
-            value: -27,
-        },{
-            value: -28,
-        },{
-            value: -29,
-        },{
-            value: -30,
-        },{
-            value: -31,
-        },{
-            value: -32,
-        },{
-            value: -33,
-        },{
-            value: -34,
-        },{
-            value: -35,
-        },{
-            value: -36,
-        },{
-            value: -37,
-        },{
-            value: -38,
-        },{
-            value: -39,
-        },{
-            value: -40,
-        },{
-            value: -41,
-        },{
-            value: -42,
-        },{
-            value: -43,
-        },{
-            value: -44,
-        },{
-            value: -45,
-        },{
-            value: -46,
-        },{
-            value: -47,
-        },{
-            value: -48,
-        },{
-            value: -49,
-        },{
-            value: -50,
-        },{
-            value: -51,
-        },{
-            value: -52,
-        },{
-            value: -53,
-        },{
-            value: -54,
-        },{
-            value: -55,
-        },{
-            value: -56,
-        },{
-            value: -57,
-        },{
-            value: -58,
-        },{
-            value: -59,
-        },{
-            value: -60,
-        },{
-            value: -61,
-        },{
-            value: -62,
-        },{
-            value: -63,
-        },{
-            value: -64,
-        },{
-            value: -65,
-        },{
-            value: -66,
-        },{
-            value: -67,
-        },{
-            value: -68,
-        },{
-            value: -69,
-        },{
-            value: -70,
-        },{
-            value: -71,
-        },{
-            value: -72,
-        },{
-            value: -73,
-        },{
-            value: -74,
-        },{
-            value: -75,
-        },{
-            value: -76,
-        },{
-            value: -77,
-        },{
-            value: -78,
-        },{
-            value: -79,
-        },{
-            value: -80,
-        },{
-            value: -81,
-        },{
-            value: -82,
-        },{
-            value: -83,
-        },{
-            value: -84,
-        },{
-            value: -85,
-        },{
-            value: -86,
-        },{
-            value: -87,
-        },{
-            value: -88,
-        },{
-            value: -89,
-        },{
-            value: -90,
-        }];
-
       return (
-          <View style={styles.container}>
+          <View style={styles.container} backgroundColor={'#454545'}>
               <View style={styles.navbar}>
                   <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={styles.back}>
                       <Image
@@ -633,64 +320,155 @@ class SecondScheduleScreen extends React.Component {
               </View>
               <View style={styles.contents}>
                   <View style={styles.dropdown}>
-                      <Dropdown
-                          label='Telescope'
-                          data={telescopeData}
-                          onChangeText={(value) => {this.setState({selectedTelescope: value})}}
-                      />
+                    <Dropdown
+                        label='Telescope'
+                        style = {{color: 'white', fontSize: 20}} //for changed text color
+                        baseColor="rgba(255, 255, 255, 1)" //for initial text color
+                        data={telescopeData}
+                        onChangeText={(value) => {this.setState({selectedTelescope: value})}}
+                    />
                   </View>
                   <View style={styles.dropdown}>
-                      <Dropdown
-                          label='Appointment type'
-                          data={typeData}
-                          onChangeText={(value) => {this.setState({selectedAppointmentType: value})}}
-                      />
+                    <Dropdown
+                        label='Appointment type'
+                        style = {{color: 'white', fontSize: 20}} //for changed text color
+                        baseColor="rgba(255, 255, 255, 1)" //for initial text color
+                        data={typeData}
+                        onChangeText={(value) => {this.setState({selectedAppointmentType: value, hideSubmit: true})}}
+                    />
                   </View>
-                  <View style={styles.dropdown}>
-                      <TextInput
-                          placeholder='Right Ascension Hours (Choose: 0 to 23)'
-                          data={possibleHours}
-                          onChangeText={(value) => {this.setState({selectedAscensionHours: value})}}
-                          keyboardType={'numeric'}
-                      />
-                  </View>
-                  <View style={styles.dropdown}>
-                      <TextInput
-                          placeholder='Right Ascension Minutes (Choose: 0 to 59)'
-                          data={possibleMinutesOrSeconds}
-                          onChangeText={(value) => {this.setState({selectedAscensionMinutes: value})}}
-                          keyboardType={'numeric'}
-                      />
-                  </View>
-                  <View style={styles.dropdown}>
-                      <TextInput
-                          placeholder='Right Ascension Seconds (Choose: 0 to 59)'
-                          data={possibleMinutesOrSeconds}
-                          onChangeText={(value) => {this.setState({selectedAscensionSeconds: value})}}
-                          keyboardType={'numeric'}
-                      />
-                  </View>
-                  <View style={styles.dropdown}>
-                      <TextInput
-                          placeholder='Declination (Choose: -90 to 90)'
-                          data={declinationData}
-                          onChangeText={(value) => {this.setState({selectedDeclination: value})}}
-                          keyboardType={'numeric'}
-                      />
-                  </View>
-                  <View style={styles.private}>
-                      <Text style={styles.privateText}>Private</Text>
-                      <Checkbox
-                          status={checked ? 'checked' : 'unchecked'}
-                          onPress={() => { this.setState({ checked: !checked }); }}
-                          color={ 'rgba(129,122,223,1)'}
-                      />
-                  </View>
-                  <TouchableHighlight onPress={() => this.scheduleAppointment()} style={styles.submitButton}>
-                      <Text style={styles.buttonText}>SUBMIT</Text>
-                  </TouchableHighlight>
-              </View>
+                    {(this.state.selectedAppointmentType == 'Celestial Body' && this.state.celestialSearchSubmitted == false) && (
+                        <View style={{ paddingVertical: 50, marginBottom: 20, marginTop: 30, alignItems: 'center' }}>
+                            <SearchBar
+                               placeholder="Enter the name of Celestial Body..."
+                               onChangeText={this.updateSearch}
+                               value={this.state.query}
+                               containerStyle={styles.searchBar}
+                            />
+                            <TouchableHighlight onPress={() => this._beginCelestialProcess()} style={styles.submitButton}>
+                              <Text style={styles.buttonText}>SEARCH</Text>
+                            </TouchableHighlight>
+                        </View>
+                    )}
+                    {(this.state.selectedAppointmentType == 'Celestial Body' && this.state.celestialSearchSubmitted == true) && (
+                        <View style={styles.dropdown}>
+                          <Dropdown
+                              label='Select Celestial Body'
+                              style = {{color: 'white', fontSize: 20}} //for changed text color
+                              baseColor="rgba(255, 255, 255, 1)" //for initial text color
+                              data={this.state.celestialBodies}
+                              onChangeText={(value) => {this.setState({selectedBody: value, hideSubmit: true })
+                                this.state.celestialBodiesDetail.forEach((element) => {
+                                    if(element[value] === value){
+                                        this.setState({
+                                            selectedBodyID: element[id]
+                                        });
+                                    }
+                                })
+                              }}
+                          />
+                        </View>
+                    )}
+                    {(this.state.selectedAppointmentType == 'Drift Scan' || this.state.selectedAppointmentType == 'Raster Scan') &&
+                    <View style={styles.numberInput}>
+                        <TextInput
+                              placeholder='Azimuth (Choose between 0 to 360)'
+                              onChangeText={(value) => {this.setState({selectedAzimuth: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={false}
+                              returnKeyType='done'
+                        />
+                    </View>}
+                    {(this.state.selectedAppointmentType == 'Drift Scan' || this.state.selectedAppointmentType == 'Raster Scan') &&
+                    <View style={styles.numberInput}>
+                        <TextInput
+                              placeholder='Elevation (Choose between 0 to 90)'
+                              onChangeText={(value) => {this.setState({selectedElevation: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={false}
+                              returnKeyType='done'
+                        />
+                    </View>}
+                    {this.state.selectedAppointmentType == 'Point' &&
+                    <View style={styles.numberInput}>
+                        <TextInput
+                              placeholder='Right Ascension Hours (Choose between 0 to 23)'
+                              onChangeText={(value) => {this.setState({selectedAscensionHours: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={false}
+                              returnKeyType='done'
+                        />
+                    </View>}
+                    {this.state.selectedAppointmentType == 'Point' &&
+                    <View style={styles.numberInput}>
+                          <TextInput
+                              placeholder='Right Ascension Minutes (Choose between 0 to 59)'
+                              onChangeText={(value) => {this.setState({selectedAscensionMinutes: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={true}
+                              returnKeyType='done'
+                          />
+                    </View>}
+                    {this.state.selectedAppointmentType == 'Point' &&
+                    <View style={styles.numberInput}>
+                        <TextInput
+                              placeholder='Right Ascension Seconds (Choose between 0 to 59)'
+                              onChangeText={(value) => {this.setState({selectedAscensionSeconds: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={true}
+                              returnKeyType='done'
+                          />
+                    </View>}
+                    {this.state.selectedAppointmentType == 'Point' &&
+                    <View style={styles.numberInput}>
+                        <TextInput
+                              placeholder='Declination (Choose between -90 and 90)'
+                              onChangeText={(value) => {this.setState({selectedDeclination: value})}}
+                              keyboardType={'numeric'}
+                              placeholderTextColor="gray"
+                              blurOnSubmit={true}
+                              returnKeyType='done'
+                          />
+                    </View>}
+                    <View style={styles.private}>
+                        <CheckBox
+                            center
+                            title='Private'
+                            checked={this.state.checked}
+                            containerStyle={styles.checkBox}
+                            checkedColor='green'
+                            onPress={() => this.setState({checked: !this.state.checked})}
+                        />
+                    </View>
 
+                  <View>
+                      {(this.state.selectedAppointmentType == 'Point') &&
+                      <TouchableHighlight onPress={() => this.scheduleAppointment()} style={styles.submitButton}>
+                          <Text style={styles.buttonText}>SUBMIT</Text>
+                      </TouchableHighlight>
+                      }
+                      {(this.state.selectedAppointmentType == 'Celestial Body') &&
+                      <TouchableHighlight onPress={() => this.scheduleCelestialAppointment()} style={styles.submitButton}>
+                          <Text style={styles.buttonText}>SUBMIT</Text>
+                      </TouchableHighlight>
+                      }
+                      {(this.state.selectedAppointmentType == 'Drift Scan') &&
+                      <TouchableHighlight onPress={() => this.scheduleDriftAppointment()} style={styles.submitButton}>
+                          <Text style={styles.buttonText}>SUBMIT</Text>
+                      </TouchableHighlight>
+                      }
+                      {(this.state.selectedAppointmentType == 'Raster Scan') &&
+                      <TouchableHighlight onPress={() => this.scheduleRasterScanAppointment()} style={styles.submitButton}>
+                          <Text style={styles.buttonText}>SUBMIT</Text>
+                      </TouchableHighlight>
+                      }
+                  </View>
+              </View>
           </View>
       );
   }

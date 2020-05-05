@@ -22,20 +22,14 @@ class PublicScreen extends React.Component {
 
   }
     async getData(){
-        console.log("Attempting to get a users public appointments")
         try{
             AsyncStorage.getItem('userid').then((userId) => {
-                console.log("Attempting to get the public appointment of user number: "+ userId)
                 this.props.publicAppts(userId,this.state.page,this.state.size).then(response => {
-                    //this.setState({isLoading: false});'
                     let statusCode = response.publicAppointments.statusCode;
-                    console.log("Getting the User's public appointments response: "+ statusCode)
-
                     if(response.type == PUBLIC_SUCCESS){
                         this.setState({content: response.publicAppointments.data.content})
                         if(response.publicAppointments.data.content.length == 0){
                             this.setState({showAppointments: 0});
-
                         }
                         else{
                             this.setState({showAppointments: 1});
@@ -56,7 +50,6 @@ class PublicScreen extends React.Component {
     }
     componentDidMount() {
         this.focusListener = this.props.navigation.addListener("didFocus", () => {
-            console.log('Public Appointments: Listener activated');
             this.getData();
         });
 
@@ -66,7 +59,6 @@ class PublicScreen extends React.Component {
       this.setState({showAppointments: 1})
   };
   render() {
-    console.log('Public Appointment content', this.state.content);
     if(!this.state.showAppointments){
         return (
             <View style={styles.container}>
@@ -106,12 +98,12 @@ class PublicScreen extends React.Component {
                             this.state.content.map((item, index) => (
                                 <View key = {item.id} style = {styles.item}>
                                     <View style = {styles.text}>
-                                        <Text style = {styles.name}>{item.userFirstName}'s Appointment</Text>
-                                        <Text style = {styles.type}>Type: {item.type} Status: {item.status}</Text>
-                                        <Text style = {styles.RightAscension}> Start Time: {moment(item.startTime).format('LLL')} </Text>
-                                        <Text style = {styles.Declination}> End Time: {moment(item.endTime).format('LLL')}</Text>
-                                        <Text style = {styles.RightAscension}> RightAscension: {item.rightAscension}</Text>
-                                        <Text style = {styles.Declination}> Declination: {item.declination}</Text>
+                                        <Text style = {styles.name}>{item.userFirstName}s Appointment</Text>
+                                        <Text style = {styles.type}>Type: {item.type}</Text>
+                                        <Text style = {styles.type}>Status: {item.status}</Text>
+                                        <Text style = {styles.type}>Begins: {moment(item.startTime).format('LLL')  }</Text>
+                                        <Text style = {styles.type}>Ends: {moment(item.endTime).format('LLL')  }</Text>
+                                        <Text style = {styles.type}>RightAscension: {item.rightAscension}         Declination: {item.declination}</Text>
                                     </View>
                                 </View>
                             ))

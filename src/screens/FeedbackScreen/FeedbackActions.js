@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 
 
-const url = "https://prod-api.ycpradiotelescope.com/";
+const url = "http://api.ycpradiotelescope.com:8080";
 export const FEEDBACK = "FEEDBACK";
 export const FEEDBACK_SUCCESS = "FEEDBACK_SUCCESS";
 export const FEEDBACK_FAILURE = "FEEDBACK_FAILURE";

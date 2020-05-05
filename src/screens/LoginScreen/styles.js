@@ -11,7 +11,6 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop:'25%',
-
     },
     title:{
         fontFamily:'Barton',
